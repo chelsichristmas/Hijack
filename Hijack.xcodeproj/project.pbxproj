@@ -77,12 +77,11 @@
 		6B5657FC24704CD8003A560D /* Hijack */ = {
 			isa = PBXGroup;
 			children = (
-				6BB390E2247B00C200457BBF /* LoginViewFolder */,
 				6BB390DD2478D76500457BBF /* Firebase Services */,
 				6BB390DA2478D6E300457BBF /* Extensions */,
 				6B5657FD24704CD8003A560D /* AppDelegate.swift */,
 				6BEBC09B247C0CEE00E26ED2 /* Models */,
-				6BB2158F247B3AB20054DED4 /* HomeViewController.swift */,
+				6BEBC0A0247C8C6E00E26ED2 /* ViewControllers */,
 				6B56580324704CD8003A560D /* Main.storyboard */,
 				6B5657FF24704CD8003A560D /* SceneDelegate.swift */,
 				6BB390E0247AEE8100457BBF /* MainView.storyboard */,
@@ -111,20 +110,22 @@
 			path = "Firebase Services";
 			sourceTree = "<group>";
 		};
-		6BB390E2247B00C200457BBF /* LoginViewFolder */ = {
-			isa = PBXGroup;
-			children = (
-				6B56580124704CD8003A560D /* LoginViewController.swift */,
-			);
-			path = LoginViewFolder;
-			sourceTree = "<group>";
-		};
 		6BEBC09B247C0CEE00E26ED2 /* Models */ = {
 			isa = PBXGroup;
 			children = (
 				6BEBC09E247C0D5400E26ED2 /* Goal.swift */,
 			);
 			path = Models;
+			sourceTree = "<group>";
+		};
+		6BEBC0A0247C8C6E00E26ED2 /* ViewControllers */ = {
+			isa = PBXGroup;
+			children = (
+				6B56580124704CD8003A560D /* LoginViewController.swift */,
+				6BB2158F247B3AB20054DED4 /* HomeViewController.swift */,
+			);
+			name = ViewControllers;
+			path = Models/ViewControllers;
 			sourceTree = "<group>";
 		};
 		BFDC042ECB17F925DDA49C20 /* Frameworks */ = {
