@@ -24,7 +24,8 @@ extension UIViewController {
     public static func showViewController(storyBoardName: String, viewControllerId: String){
         let storyboard = UIStoryboard(name: storyBoardName, bundle: nil)
         let newVC = storyboard.instantiateViewController(identifier: viewControllerId)
-        resetWindow(with: newVC)
+        let navigationController = UINavigationController(rootViewController: newVC)
+        resetWindow(with: navigationController)
         }
     
 }

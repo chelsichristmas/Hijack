@@ -20,6 +20,7 @@
 		6BB390D924772C0F00457BBF /* UIImage+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6BB390D824772C0F00457BBF /* UIImage+Extensions.swift */; };
 		6BB390DF2478D78B00457BBF /* AuthenticationSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6BB390DE2478D78B00457BBF /* AuthenticationSession.swift */; };
 		6BB390E1247AEE8100457BBF /* MainView.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6BB390E0247AEE8100457BBF /* MainView.storyboard */; };
+		6BEBC09F247C0D5400E26ED2 /* Goal.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6BEBC09E247C0D5400E26ED2 /* Goal.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -39,6 +40,7 @@
 		6BB390D824772C0F00457BBF /* UIImage+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage+Extensions.swift"; sourceTree = "<group>"; };
 		6BB390DE2478D78B00457BBF /* AuthenticationSession.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthenticationSession.swift; sourceTree = "<group>"; };
 		6BB390E0247AEE8100457BBF /* MainView.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = MainView.storyboard; sourceTree = "<group>"; };
+		6BEBC09E247C0D5400E26ED2 /* Goal.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Goal.swift; sourceTree = "<group>"; };
 		932B673B1E4B2DA4E3324815 /* Pods-Hijack.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Hijack.debug.xcconfig"; path = "Target Support Files/Pods-Hijack/Pods-Hijack.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -79,6 +81,7 @@
 				6BB390DD2478D76500457BBF /* Firebase Services */,
 				6BB390DA2478D6E300457BBF /* Extensions */,
 				6B5657FD24704CD8003A560D /* AppDelegate.swift */,
+				6BEBC09B247C0CEE00E26ED2 /* Models */,
 				6BB2158F247B3AB20054DED4 /* HomeViewController.swift */,
 				6B56580324704CD8003A560D /* Main.storyboard */,
 				6B5657FF24704CD8003A560D /* SceneDelegate.swift */,
@@ -114,6 +117,14 @@
 				6B56580124704CD8003A560D /* LoginViewController.swift */,
 			);
 			path = LoginViewFolder;
+			sourceTree = "<group>";
+		};
+		6BEBC09B247C0CEE00E26ED2 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				6BEBC09E247C0D5400E26ED2 /* Goal.swift */,
+			);
+			path = Models;
 			sourceTree = "<group>";
 		};
 		BFDC042ECB17F925DDA49C20 /* Frameworks */ = {
@@ -256,6 +267,7 @@
 				6B5657FE24704CD8003A560D /* AppDelegate.swift in Sources */,
 				6BB390DF2478D78B00457BBF /* AuthenticationSession.swift in Sources */,
 				6B56580024704CD8003A560D /* SceneDelegate.swift in Sources */,
+				6BEBC09F247C0D5400E26ED2 /* Goal.swift in Sources */,
 				6BB21590247B3AB20054DED4 /* HomeViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
