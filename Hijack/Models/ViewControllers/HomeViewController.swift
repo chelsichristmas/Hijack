@@ -9,22 +9,46 @@
 import UIKit
 
 class HomeViewController: UIViewController {
-
+    
+    private var goals = [Goal]()
+    @IBOutlet weak var tableView: UITableView!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-//        self.navigationController?.navigationBar.barTintColor = #colorLiteral(red: 0.6838642359, green: 0.8506552577, blue: 0.6396567822, alpha: 1)
-    
+
+        self.goals = Goal.goals
+        tableView.dataSource = self
+        tableView.delegate = self
     }
     
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
+    private func updateUI() {
+//           self.navigationController?.navigationBar.barTintColor = #colorLiteral(red: 0.6838642359, green: 0.8506552577, blue: 0.6396567822, alpha: 1)
     }
-    */
+    
+    
 
+}
+
+extension HomeViewController: UITableViewDataSource{
+  
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return goals.count
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: "goalCell", for: indexPath) as? GoalCell else {
+            fatalError("Unable to deque Goal Cell")
+        }
+        
+        let goal = goals[indexPath.row]
+        cell.configureCell(goal: goal)
+        return cell
+      }
+    
+}
+
+extension HomeViewController: UITableViewDelegate {
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        120
+    }
 }
