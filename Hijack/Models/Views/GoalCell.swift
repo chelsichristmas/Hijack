@@ -18,6 +18,7 @@ class GoalCell: UITableViewCell {
         
         goalImageView.image = UIImage(named: goal.imageName)
         goalImageView.alpha = 0.8
+        goalImageView.roundImage()
         goalNameLabel.text = goal.name
     }
 }
