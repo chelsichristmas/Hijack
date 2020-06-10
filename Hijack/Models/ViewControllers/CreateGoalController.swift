@@ -8,13 +8,17 @@
 
 import UIKit
 
+
+// modal presentation
 class CreateGoalController: UIViewController {
-    private var task: String?
-    private var tasks = [String]() {
+    public var task: String?
+    public var tasks = [String]() {
         didSet {
             tableView.reloadData()
         }
     }
+    
+   
     // change to an array of type task later
 
     @IBOutlet weak var tableView: UITableView!

@@ -14,6 +14,6 @@ class MenuCell: UICollectionViewCell {
     
     public func configureCell(menuItem: MenuItem) {
         nameLabel.text = menuItem.name
-        self.backgroundColor = menuItem.color
+        self.backgroundColor = #colorLiteral(red: 0.6838642359, green: 0.8506552577, blue: 0.6396567822, alpha: 1)
     }
 }

@@ -10,8 +10,9 @@ import UIKit
 
 class TaskCell: UITableViewCell {
 
-    public func configureCell(task: String) {
-    
+    @IBOutlet weak var descriptionLabel: UILabel!
+    public func configureCell(task: Task) {
+        descriptionLabel.text = task.description
     }
 
 }

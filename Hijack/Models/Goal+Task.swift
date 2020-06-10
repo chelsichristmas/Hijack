@@ -19,12 +19,13 @@ struct Goal{
     let progress: Int
     let tasks: [Task]
 
-  
+  // progress equals completed tasks didvided by total tasks(completed&not completed) times 100
+    // each goal needs to have a property for compleetd tasks an a propperty for not completed tasks rather than an overall tasks property
   
   static let goals = [
-    Goal(name: "Redecorate Bedroom", dueDate: "04/13/2021", imageName: "bedroom", status: "active",progress: 15, tasks: Task.bedroomTasks),
-    Goal(name: "Go to Bali", dueDate: "10/20/2020", imageName: "bali", status: "active", progress: 20, tasks: Task.baliTasks),
-    Goal(name: "Create cool stuff", dueDate: "09/18/2025", imageName: "coolStuff", status: "completed", progress: 12, tasks: Task.coolTasks)
+    Goal(name: "Redecorate Bedroom", dueDate: "04/13/2021", imageName: "bedroom", status: "active",progress: 50, tasks: Task.bedroomTasks),
+    Goal(name: "Go to Bali", dueDate: "10/20/2020", imageName: "bali", status: "active", progress: 35, tasks: Task.baliTasks),
+    Goal(name: "Create cool stuff", dueDate: "09/18/2025", imageName: "coolStuff", status: "completed", progress: 90, tasks: Task.coolTasks)
   ]
   
     // I think I'd like to sort by due date (earliest to latest due date)
