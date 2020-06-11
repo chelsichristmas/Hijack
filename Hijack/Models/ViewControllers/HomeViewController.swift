@@ -89,19 +89,21 @@ extension HomeViewController: UITableViewDelegate {
         
         let goal = goals[indexPath.row]
         let storyboard = UIStoryboard(name: "MainView", bundle: nil)
-        let vc = storyboard.instantiateViewController(identifier: "GoalDetailViewController") { (coder) in
+        if tableView == goalTableView {
+            let vc = storyboard.instantiateViewController(identifier: "GoalDetailViewController") { (coder) in
+                
+                return GoalDetailViewController(coder: coder, goal: goal)
+            }
             
-            return GoalDetailViewController(coder: coder, goal: goal)
+            navigationController?.pushViewController(vc, animated: true)
+            // when using a storyboard you have to instantiate the storyboard
+            //        let vc = GoalDetailViewController()
+            //
+            //        navigationController?.pushViewController(vc, animated: true)
+            //        performSegue(withIdentifier: "goalDetailSegue", sender: nil)
+            
+            
         }
-        
-        navigationController?.pushViewController(vc, animated: true)
-        // when using a storyboard you have to instantiate the storyboard
-        //        let vc = GoalDetailViewController()
-        //
-        //        navigationController?.pushViewController(vc, animated: true)
-        //        performSegue(withIdentifier: "goalDetailSegue", sender: nil)
-        
-        
     }
     
     

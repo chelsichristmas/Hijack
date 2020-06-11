@@ -13,35 +13,48 @@ class GoalDetailViewController: UIViewController {
     
     public var tasks = [Task]()
     private var goal: Goal
-
+    
     @IBOutlet weak var goalNameLabel: UILabel!
     @IBOutlet weak var tableView: UITableView!
+    @IBOutlet weak var goalImageView: UIImageView!
+    @IBOutlet weak var progressBar: UIProgressView!
+    @IBOutlet weak var progressLabel: UILabel!
     override func viewDidLoad() {
         super.viewDidLoad()
-        updateUI()
         
+        updateUI()
+        configureTableView()
     }
     
+    private func configureTableView() {
+        tableView.delegate = self
+        tableView.dataSource = self
+    }
     
     private func updateUI() {
         
         // change constraints on label
         goalNameLabel.text = goal.name
         // the image
+        
+        goalImageView.image = UIImage(named: goal.imageName)
+        tasks = goal.tasks
+        progressLabel.text = "Progress: \(goal.progress)%"
+        progressBar.progress = Float(goal.progress)/100
     }
     
     init?(coder: NSCoder, goal: Goal) {
-       self.goal = goal
-       super.init(coder: coder)
-     }
-     
-     required init?(coder: NSCoder) {
-       fatalError("init(coder:) has not been implemented")
-     }
-
-   
+        self.goal = goal
+        super.init(coder: coder)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    
     // Table view where you can add, remove, and check off tasks. Second table view/section where you can see completed tasks and add tasks back if they weren't complrted properly or at all
-
+    
     
     // UI
     // The cover photo for the goal is slighlty darkened
@@ -63,6 +76,41 @@ extension GoalDetailViewController: UITableViewDataSource {
             fatalError("Unable to deque task cell")
         }
         
+        let task = tasks[indexPath.row]
+        cell.configureDetailCell(task: task)
+        
         return cell
     }
+    
+    
+}
+
+extension GoalDetailViewController: UITableViewDelegate {
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        
+        return 55
+        
+        
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        
+        // push up alert Controller or make it a button  on the far left of the cell
+        
+        let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
+        
+        
+//           let cameraAction = UIAlertAction(title: "Camera", style: .default) { alertAction in
+//             self.imagePickerController.sourceType = .camera
+//             self.present(self.imagePickerController, animated: true)
+//           }
+                      let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
+        let addToTodaysTasks = UIAlertAction(title: "Add to Today's Tasks", style: .default)
+        alertController.addAction(addToTodaysTasks)
+           alertController.addAction(cancelAction)
+           present(alertController, animated: true)
+        
+    }
+    
+    
 }
