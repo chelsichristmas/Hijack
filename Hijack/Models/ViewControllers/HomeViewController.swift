@@ -10,7 +10,7 @@ import UIKit
 
 class HomeViewController: UIViewController {
     
-    private var goals = [Goal]()
+    private var goals = [MockGoal]()
     private var tasks = [Task]()
     private var menuItems = MenuItem.menuItems
     
@@ -22,7 +22,7 @@ class HomeViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        self.goals = Goal.goals
+        self.goals = MockGoal.goals
         self.tasks = Task.bedroomTasks
         goalTableView.dataSource = self
         goalTableView.delegate = self

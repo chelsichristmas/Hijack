@@ -11,8 +11,9 @@ import Foundation
 
 
 // Dummy Goals Model
-struct Goal{
-  let name: String
+struct MockGoal{
+  let goalName: String
+    let goalId: String?
     let dueDate: String
     let imageName: String
     let status: String
@@ -23,9 +24,9 @@ struct Goal{
     // each goal needs to have a property for compleetd tasks an a propperty for not completed tasks rather than an overall tasks property
   
   static let goals = [
-    Goal(name: "Redecorate Bedroom", dueDate: "04/13/2021", imageName: "bedroom", status: "active",progress: 50, tasks: Task.bedroomTasks),
-    Goal(name: "Go to Bali", dueDate: "10/20/2020", imageName: "bali", status: "active", progress: 35, tasks: Task.baliTasks),
-    Goal(name: "Create cool stuff", dueDate: "09/18/2025", imageName: "coolStuff", status: "completed", progress: 90, tasks: Task.coolTasks)
+    MockGoal(goalName: "Redecorate Bedroom", goalId: nil, dueDate: "04/13/2021", imageName: "bedroom", status: "active",progress: 50, tasks: Task.bedroomTasks),
+    MockGoal(goalName: "Go to Bali", goalId: nil, dueDate: "10/20/2020", imageName: "bali", status: "active", progress: 35, tasks: Task.baliTasks),
+    MockGoal(goalName: "Create cool stuff", goalId: nil, dueDate: "09/18/2025", imageName: "coolStuff", status: "completed", progress: 90, tasks: Task.coolTasks)
   ]
   
     // I think I'd like to sort by due date (earliest to latest due date)

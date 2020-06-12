@@ -17,12 +17,12 @@ class GoalCell: UITableViewCell {
     
     @IBOutlet weak var progressBar: UIProgressView!
     @IBOutlet weak var progressLabel: UILabel!
-    public func configureCell(goal: Goal) {
+    public func configureCell(goal: MockGoal) {
         
         goalImageView.image = UIImage(named: goal.imageName)
         goalImageView.alpha = 0.8
         goalImageView.roundImage()
-        goalNameLabel.text = goal.name
+        goalNameLabel.text = goal.goalName
         progressLabel.text = "Progress: \(goal.progress)%"
         progressBar.progress = Float(goal.progress)/100
     }

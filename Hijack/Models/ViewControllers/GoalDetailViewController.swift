@@ -12,7 +12,7 @@ class GoalDetailViewController: UIViewController {
     
     
     public var tasks = [Task]()
-    private var goal: Goal
+    private var goal: MockGoal
     
     @IBOutlet weak var goalNameLabel: UILabel!
     @IBOutlet weak var tableView: UITableView!
@@ -34,7 +34,7 @@ class GoalDetailViewController: UIViewController {
     private func updateUI() {
         
         // change constraints on label
-        goalNameLabel.text = goal.name
+        goalNameLabel.text = goal.goalName
         // the image
         
         goalImageView.image = UIImage(named: goal.imageName)
@@ -43,7 +43,7 @@ class GoalDetailViewController: UIViewController {
         progressBar.progress = Float(goal.progress)/100
     }
     
-    init?(coder: NSCoder, goal: Goal) {
+    init?(coder: NSCoder, goal: MockGoal) {
         self.goal = goal
         super.init(coder: coder)
     }
@@ -105,7 +105,9 @@ extension GoalDetailViewController: UITableViewDelegate {
 //             self.present(self.imagePickerController, animated: true)
 //           }
                       let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
-        let addToTodaysTasks = UIAlertAction(title: "Add to Today's Tasks", style: .default)
+        let addToTodaysTasks = UIAlertAction(title: "Add to Today's Tasks", style: .default) { alertAction in
+            // function for adding task to the today's tasks list
+        }
         alertController.addAction(addToTodaysTasks)
            alertController.addAction(cancelAction)
            present(alertController, animated: true)

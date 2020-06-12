@@ -7,6 +7,8 @@
 //
 
 import UIKit
+import FirebaseAuth
+import FirebaseFirestore
 
 
 // modal presentation
@@ -19,10 +21,13 @@ class CreateGoalController: UIViewController {
     }
     
    
+   
     // change to an array of type task later
 
     @IBOutlet weak var tableView: UITableView!
+    @IBOutlet weak var goalNameTextField: UITextField!
     @IBOutlet weak var taskTextField: UITextField!
+    @IBOutlet weak var createButton: UIBarButtonItem!
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -34,7 +39,22 @@ class CreateGoalController: UIViewController {
         tableView.delegate = self
     }
     
-
+    @IBAction func createButtonPressed(_ sender: Any) {
+        DatabaseService.shared.createGoal(goalName: "hi", imageName: "imageName", status: "incomplete", progress: 20, tasks: Task.bedroomTasks) { (result) in
+             switch result {
+                 case.failure(let error):
+                   DispatchQueue.main.async {
+                    self.showAlert(title: "Error creating item", message: "Sorry something went wrong: \(error.localizedDescription)")
+                   }
+                 case .success(let documentId):
+                break
+                   
+                 }
+               }
+        
+        
+    }
+    
     @IBAction func addButtonPressed(_ sender: Any) {
         
         print("button pressed")
@@ -86,5 +106,5 @@ extension CreateGoalController: UITextFieldDelegate {
     func textFieldDidBeginEditing(_ textField: UITextField) {
         
     }
-    // I need something that tells I need a delegate between the add button and the
+    
 }

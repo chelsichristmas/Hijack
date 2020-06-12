@@ -42,13 +42,31 @@
                                 <rect key="frame" x="119" y="629" width="182" height="55"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <state key="normal" image="createAccountButtonShadow"/>
+                                <connections>
+                                    <action selector="createButtonPressed:" destination="BYZ-38-t0r" eventType="touchUpInside" id="lOx-Oa-JqB"/>
+                                </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="thm-jE-A1q">
-                                <rect key="frame" x="158" y="562" width="90" height="44"/>
+                                <rect key="frame" x="162" y="577" width="90" height="44"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <state key="normal" title="Button" image="loginButtonShadow"/>
                                 <connections>
                                     <action selector="loginButtonPressed:" destination="BYZ-38-t0r" eventType="touchUpInside" id="Rxy-qT-tg1"/>
+                                </connections>
+                            </button>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="// Error Message //" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="kFe-UD-ij6">
+                                <rect key="frame" x="76" y="332" width="270" height="70"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" white="0.33333333329999998" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="jRD-c7-tOs">
+                                <rect key="frame" x="147" y="534" width="112" height="35"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" image="continueButton"/>
+                                <connections>
+                                    <action selector="continueButtonPressed:" destination="BYZ-38-t0r" eventType="touchUpInside" id="WqQ-6o-OIk"/>
                                 </connections>
                             </button>
                         </subviews>
@@ -56,9 +74,13 @@
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                     </view>
                     <connections>
+                        <outlet property="continueButton" destination="jRD-c7-tOs" id="WhA-SD-FVx"/>
                         <outlet property="createAccountButton" destination="aJg-z9-H1B" id="81V-CV-0ro"/>
+                        <outlet property="emailTextField" destination="VOR-Hm-qQD" id="lD6-yA-rzf"/>
+                        <outlet property="errorLabel" destination="kFe-UD-ij6" id="sDA-c4-JtQ"/>
                         <outlet property="hijackImageView" destination="KBW-v1-K9u" id="gpq-DK-pg7"/>
                         <outlet property="loginButton" destination="thm-jE-A1q" id="nL0-jD-U1s"/>
+                        <outlet property="passwordTextField" destination="bKt-bG-6XT" id="F1W-0T-gRJ"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
@@ -67,6 +89,7 @@
         </scene>
     </scenes>
     <resources>
+        <image name="continueButton" width="244" height="68"/>
         <image name="createAccountButtonShadow" width="354" height="96"/>
         <image name="loginButtonShadow" width="164" height="80"/>
         <image name="questionmark.circle" catalog="system" width="128" height="121"/>
