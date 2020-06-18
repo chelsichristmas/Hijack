@@ -12,7 +12,7 @@ class GoalDetailViewController: UIViewController {
     
     
     public var tasks = [Task]()
-    private var goal: MockGoal
+    private var goal: Goal
     
     @IBOutlet weak var goalNameLabel: UILabel!
     @IBOutlet weak var tableView: UITableView!
@@ -43,7 +43,7 @@ class GoalDetailViewController: UIViewController {
         progressBar.progress = Float(goal.progress)/100
     }
     
-    init?(coder: NSCoder, goal: MockGoal) {
+    init?(coder: NSCoder, goal: Goal) {
         self.goal = goal
         super.init(coder: coder)
     }

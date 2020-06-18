@@ -17,7 +17,7 @@ class GoalCell: UITableViewCell {
     
     @IBOutlet weak var progressBar: UIProgressView!
     @IBOutlet weak var progressLabel: UILabel!
-    public func configureCell(goal: MockGoal) {
+    public func configureCell(goal: Goal) {
         
         goalImageView.image = UIImage(named: goal.imageName)
         goalImageView.alpha = 0.8

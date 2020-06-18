@@ -40,20 +40,29 @@ class CreateGoalController: UIViewController {
     }
     
     @IBAction func createButtonPressed(_ sender: Any) {
-        DatabaseService.shared.createGoal(goalName: "hi", imageName: "imageName", status: "incomplete", progress: 20, tasks: Task.bedroomTasks) { (result) in
+        
+        guard let goalName = goalNameTextField.text,
+            !goalName.isEmpty else {
+                showAlert(title: "Missing Fields", message: "All fields are required along with a photo.")
+                return
+        }
+        
+        DatabaseService.shared.createGoal(goalName: goalName, imageName: "imageName", status: "incomplete", progress: 20, tasks: Task.bedroomTasks) { (result) in
              switch result {
                  case.failure(let error):
                    DispatchQueue.main.async {
                     self.showAlert(title: "Error creating item", message: "Sorry something went wrong: \(error.localizedDescription)")
                    }
                  case .success(let documentId):
-                break
+                print("success, documentId = \(documentId)")
                    
                  }
                }
         
         
     }
+    
+    
     
     @IBAction func addButtonPressed(_ sender: Any) {
         

@@ -7,10 +7,20 @@
 //
 
 import UIKit
+import FirebaseFirestore
+import FirebaseAuth
 
 class HomeViewController: UIViewController {
     
-    private var goals = [MockGoal]()
+    private var goals = [Goal]() {
+        didSet{
+            DispatchQueue.main.async {
+                self.goalTableView.reloadData()
+            }
+        }
+    }
+    
+    private var listener: ListenerRegistration?
     private var tasks = [Task]()
     private var menuItems = MenuItem.menuItems
     
@@ -18,11 +28,28 @@ class HomeViewController: UIViewController {
     
     @IBOutlet weak var goalTableView: UITableView!
     
+    override func viewDidAppear(_ animated: Bool) {
+         super.viewDidAppear(true)
+        listener = Firestore.firestore().collection(DatabaseService.goalsCollection).addSnapshotListener({ [weak self] (snapshot, error) in
+             if let error = error {
+               DispatchQueue.main.async {
+                 self?.showAlert(title: "Try again later", message: "\(error.localizedDescription)")
+               }
+             } else if let snapshot = snapshot {
+               let goals = snapshot.documents.map { Goal($0.data()) }
+               self?.goals = goals.sorted{  $0.goalName > $1.goalName }
+             }
+           })
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(true)
+        listener?.remove() // no longer are we listening for changes from Firebase
+      }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        self.goals = MockGoal.goals
         self.tasks = Task.bedroomTasks
         goalTableView.dataSource = self
         goalTableView.delegate = self
