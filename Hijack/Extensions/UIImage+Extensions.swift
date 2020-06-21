@@ -9,9 +9,7 @@
 import UIKit
 
 extension UIImageView {
-
     func roundImage() {
-
         self.layer.borderWidth = 1
         self.layer.masksToBounds = false
         self.layer.borderColor = UIColor.systemGroupedBackground.cgColor
