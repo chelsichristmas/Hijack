@@ -37,7 +37,7 @@ class GoalDetailViewController: UIViewController {
         goalNameLabel.text = goal.goalName
         // the image
         
-        goalImageView.image = UIImage(named: goal.imageName)
+        goalImageView.image = UIImage(named: goal.imageURL)
         tasks = goal.tasks
         progressLabel.text = "Progress: \(goal.progress)%"
         progressBar.progress = Float(goal.progress)/100

@@ -42,3 +42,9 @@ struct Task {
     
     static let coolTasks = [Task(description: "Purchase chrome paint", status: "complete"), Task(description: "Attend interesting lectures", status: "not complete"), Task(description: "Dissect old devices", status: "not complete")]
 }
+
+
+enum TaskStatus: String {
+    case completed = "completed"
+    case notCompleted = "not completed"
+}

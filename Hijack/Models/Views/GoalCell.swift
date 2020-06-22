@@ -7,6 +7,8 @@
 //
 
 import UIKit
+import Kingfisher
+import Firebase
 
 class GoalCell: UITableViewCell {
     
@@ -18,8 +20,8 @@ class GoalCell: UITableViewCell {
     @IBOutlet weak var progressBar: UIProgressView!
     @IBOutlet weak var progressLabel: UILabel!
     public func configureCell(goal: Goal) {
-        
-        goalImageView.image = UIImage(named: goal.imageName)
+        goalImageView.kf.setImage(with: URL(string: goal.imageURL))
+        goalImageView.image = UIImage(named: goal.imageURL)
         goalImageView.alpha = 0.8
         goalImageView.roundImage()
         goalNameLabel.text = goal.goalName
