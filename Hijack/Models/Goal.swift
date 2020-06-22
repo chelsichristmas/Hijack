@@ -2,25 +2,30 @@
 //  Goal.swift
 //  Hijack
 //
-//  Created by Chelsi Christmas on 5/25/20.
+//  Created by Chelsi Christmas on 6/11/20.
 //  Copyright © 2020 Chelsi Christmas. All rights reserved.
 //
 
 import Foundation
 
-// Dummy Goals Model
-struct Goal{
-  let name: String
-    let dueDate: String
-    let imageName: String
+struct Goal {
 
-  
-  
-  static let goals = [
-     Goal(name: "Redecorate Bedroom", dueDate: "04/13/2021", imageName: "bedroom"),
-    Goal(name: "Go to Bali", dueDate: "10/20/2020", imageName: "bali"),
-    Goal(name: "Create cool stuff", dueDate: "09/18/2025", imageName: "coolStuff")
-  ]
-  
-    // I think I'd like to sort by due date (earliest to latest due date)
+let goalName: String
+let goalId: String
+let imageName: String
+let status: String
+let progress: Int
+let tasks: [Task]
+
+}
+
+extension Goal {
+    init(_ dictionary: [String: Any]) {
+        self.goalName = dictionary["goalName"] as? String ?? "no item name"
+            self.goalId = dictionary["goalId"] as? String ?? "no goal id"
+        self.imageName = dictionary["imageName"] as? String ?? "no image name"
+        self.status = dictionary["status"] as? String ?? "no status available"
+        self.progress = dictionary["progress"] as? Int ?? 0
+        self.tasks = dictionary["tasks"] as? [Task] ?? Task.bedroomTasks
+    }
 }

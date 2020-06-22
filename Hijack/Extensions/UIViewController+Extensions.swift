@@ -26,6 +26,15 @@ extension UIViewController {
         let newVC = storyboard.instantiateViewController(identifier: viewControllerId)
         let navigationController = UINavigationController(rootViewController: newVC)
         resetWindow(with: navigationController)
-        }
+    }
+    
+    
+    public func showAlert(title: String?, message: String?) {
+        let alertController = UIAlertController (title: title, message: message, preferredStyle: .alert)
+        let okAction = UIAlertAction(title: "Ok", style: .cancel, handler: nil)
+        alertController.addAction(okAction)
+        present(alertController, animated: true)
+    }
+    
     
 }
