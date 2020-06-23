@@ -23,7 +23,7 @@ extension Goal {
     init(_ dictionary: [String: Any]) {
         self.goalName = dictionary["goalName"] as? String ?? "no item name"
             self.goalId = dictionary["goalId"] as? String ?? "no goal id"
-        self.imageURL = dictionary["imageName"] as? String ?? "no image URL"
+        self.imageURL = dictionary["imageURL"] as? String ?? "no image URL"
         self.status = dictionary["status"] as? String ?? "no status available"
         self.progress = dictionary["progress"] as? Int ?? 0
         self.tasks = dictionary["tasks"] as? [Task] ?? Task.bedroomTasks

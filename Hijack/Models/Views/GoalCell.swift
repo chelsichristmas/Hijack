@@ -21,7 +21,6 @@ class GoalCell: UITableViewCell {
     @IBOutlet weak var progressLabel: UILabel!
     public func configureCell(goal: Goal) {
         goalImageView.kf.setImage(with: URL(string: goal.imageURL))
-        goalImageView.image = UIImage(named: goal.imageURL)
         goalImageView.alpha = 0.8
         goalImageView.roundImage()
         goalNameLabel.text = goal.goalName
