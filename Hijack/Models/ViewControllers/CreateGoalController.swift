@@ -100,7 +100,7 @@ class CreateGoalController: UIViewController {
         
         
     }
-    
+
     private func uploadPhoto(photo: UIImage, documentId: String) {
         StorageService.shared.uploadPhoto(itemId: documentId, image: photo) { [weak self] (result) in
             switch result {
@@ -132,6 +132,9 @@ class CreateGoalController: UIViewController {
     }
     
     
+//    private func addTask(goal: Goal) {
+//        DatabaseService.shared.addTask(goal: goal, task: , completion: <#T##(Result<Bool, Error>) -> ()#>)
+//    }
     
     
     @IBAction func addButtonPressed(_ sender: Any) {
@@ -141,8 +144,9 @@ class CreateGoalController: UIViewController {
         
         if taskTextField?.text != "" {
             tasks.append(taskTextField.text ?? "no task")
+        
             resetTaskTextField()
-            
+        
             
         } else {
             // Alert: Enter a task

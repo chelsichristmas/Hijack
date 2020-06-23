@@ -34,15 +34,14 @@ struct MockGoal{
 
 struct Task {
     let description: String // name/description of task
-    let status: String // not completed or completed
+    let status: TaskStatus // not completed or completed
     
-    static let bedroomTasks = [Task(description: "Save $150", status: "not complete"), Task(description: "Remove old furniture", status: "not complete"), Task(description: "Order star lamp", status: "not complete")]
+    static let bedroomTasks = [Task(description: "Save $150", status: .notCompleted), Task(description: "Remove old furniture", status: .notCompleted), Task(description: "Order star lamp", status: .completed)]
     
-    static let baliTasks = [Task(description: "Book a flight", status: "complete"), Task(description: "Choose hotel", status: "not complete"), Task(description: "Invite a friend", status: "not complete")]
+    static let baliTasks = [Task(description: "Book a flight", status: .completed), Task(description: "Choose hotel", status: .notCompleted), Task(description: "Invite a friend", status: .notCompleted)]
     
-    static let coolTasks = [Task(description: "Purchase chrome paint", status: "complete"), Task(description: "Attend interesting lectures", status: "not complete"), Task(description: "Dissect old devices", status: "not complete")]
+    static let coolTasks = [Task(description: "Purchase chrome paint", status: .completed), Task(description: "Attend interesting lectures", status: .notCompleted), Task(description: "Dissect old devices", status: .notCompleted)]
 }
-
 
 enum TaskStatus: String {
     case completed = "completed"
