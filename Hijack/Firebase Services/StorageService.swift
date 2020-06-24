@@ -9,6 +9,9 @@
 import Foundation
 import FirebaseStorage
 
+enum StorageServiceErrors: Error {
+    case cantConvertToJpeg
+}
 class StorageService {
   
   // in our app we will be uploading a photo to Storage in two places: 1. ProfileViewController and 2. CreateItemViewController
@@ -26,6 +29,7 @@ class StorageService {
     
     // 1. convert UIImage to Data because this is the object we are posting to Firebase Storage
     guard let imageData = image.jpegData(compressionQuality: 1.0) else {
+        completion(.failure(StorageServiceErrors.cantConvertToJpeg))
       return
     }
     
