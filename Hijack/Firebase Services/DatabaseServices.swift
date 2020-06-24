@@ -14,8 +14,7 @@ class DatabaseService {
   
   static let goalsCollection = "goals" // collection
   static let usersCollection = "users"
-  static let commentsCollection = "comments" // sub-collection on an item document
-  static let favoritesCollection = "favorites" // sub-collection on a user docment
+  
   
   // review - firebase firestore hierarchy
   // top level
