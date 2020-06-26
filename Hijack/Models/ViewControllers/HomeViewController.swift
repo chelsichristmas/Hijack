@@ -22,6 +22,12 @@ class HomeViewController: UIViewController {
     
     private var listener: ListenerRegistration?
     private var tasks = [Task]()
+    private var inMemoryTasks = [String]()
+    public var arrayOfInMemoryTasks = [[String]]() {
+        didSet {
+            print(arrayOfInMemoryTasks)
+        }
+    }
     private var menuItems = MenuItem.menuItems
     
     @IBOutlet weak var taskTableView: UITableView!
@@ -30,6 +36,8 @@ class HomeViewController: UIViewController {
     
     override func viewDidAppear(_ animated: Bool) {
          super.viewDidAppear(true)
+        
+        
         listener = Firestore.firestore().collection(DatabaseService.goalsCollection).addSnapshotListener({ [weak self] (snapshot, error) in
              if let error = error {
                DispatchQueue.main.async {
@@ -53,8 +61,16 @@ class HomeViewController: UIViewController {
         self.tasks = Task.bedroomTasks
         goalTableView.dataSource = self
         goalTableView.delegate = self
-        taskTableView.delegate = self
-        taskTableView.dataSource = self
+//        taskTableView.delegate = self
+//        taskTableView.dataSource = self
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        guard let createVC = segue.destination as? CreateGoalController else {
+            return
+        }
+        createVC.inMemoryTasks = inMemoryTasks
+        
     }
     
     private func updateUI() {
@@ -116,13 +132,13 @@ extension HomeViewController: UITableViewDelegate {
         
         let goal = goals[indexPath.row]
         let storyboard = UIStoryboard(name: "MainView", bundle: nil)
-        if tableView == goalTableView {
-            let vc = storyboard.instantiateViewController(identifier: "GoalDetailViewController") { (coder) in
-                
-                return GoalDetailViewController(coder: coder, goal: goal)
-            }
+//        if tableView == goalTableView {
+//            let vc = storyboard.instantiateViewController(identifier: "GoalDetailViewController") { (coder) in
+//
+//                return GoalDetailViewController(coder: coder, goal: goal, tasks: tasks)
+//            }
             
-            navigationController?.pushViewController(vc, animated: true)
+//            navigationController?.pushViewController(vc, animated: true)
             // when using a storyboard you have to instantiate the storyboard
             //        let vc = GoalDetailViewController()
             //
@@ -134,7 +150,7 @@ extension HomeViewController: UITableViewDelegate {
     }
     
     
-}
+
 
 
 

@@ -26,12 +26,24 @@ class CreateGoalController: UIViewController {
         }
     }
     public var task: String?
-    public var tasks = [String]() {
+    private var tasks = [Task]() {
         didSet {
             tableView.reloadData()
+            print("\(task?.description)")
         }
     }
+    public var inMemoryTasks = [String]()
+    private let homeVC = HomeViewController()
+    private var goalId: String?
+    private var listener: ListenerRegistration?
     
+    
+    public lazy var button: UIButton = {
+        let button = UIButton()
+        button.setImage(UIImage(systemName: "star"), for: .normal)
+        button.addTarget(self, action: #selector(createGoalButtonPressed), for: .touchUpInside)
+        return button
+    }()
     
     
     // change to an array of type task later
@@ -41,19 +53,99 @@ class CreateGoalController: UIViewController {
     @IBOutlet weak var taskTextField: UITextField!
     @IBOutlet weak var coverPhotoImageView: UIImageView!
     @IBOutlet weak var cameraButton: UIButton!
-    @IBOutlet weak var createButton: UIBarButtonItem!
-    override func viewDidLoad() {
+
+    @IBOutlet weak var createGoalButton: UIButton!
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(true)
+        //taskListener()
+    }
+        override func viewDidLoad() {
         super.viewDidLoad()
         
         configureTableView()
+        cameraButtonCheck()
+    }
+    
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(true)
+        listener?.remove()
+    }
+    private func cameraButtonCheck() {
+        if goalNameTextField.text != "" && button.imageView?.image == UIImage(systemName: "star.fill") {
+            cameraButton.isEnabled = true
+            cameraButton.backgroundColor = .darkGray
+        } else {
+            cameraButton.isEnabled = false
+        }
+    }
+    
+    private func taskListener() {
+        
+        print("task listener activated")
+        guard let goalId = goalId else {
+            return
+        }
+        listener = Firestore.firestore().collection(DatabaseService.goalsCollection).document(goalId).collection(DatabaseService.tasksCollection).addSnapshotListener({ [weak self] (snapshot, error) in
+          if let error = error {
+            DispatchQueue.main.async {
+              self?.showAlert(title: "Try again later", message: "\(error.localizedDescription)")
+            }
+          } else if let snapshot = snapshot {
+            let tasks = snapshot.documents.map { Task($0.data())}
+            self?.tasks = tasks
+          }
+        })
+        
+        
     }
     
     private func configureTableView(){
         tableView.dataSource = self
         tableView.delegate = self
-        cameraButton.isHidden = false
+//        cameraButton.isHidden = false
+        goalNameTextField.rightView = button
+        goalNameTextField.rightViewMode = .always
+        
+        
     }
     
+    
+    @objc private func createGoalButtonPressed() {
+        
+        guard let goalName = goalNameTextField.text,
+            !goalName.isEmpty else {
+                showAlert(title: "Missing Fields", message: "Enter goal name")
+                //                   sender.isEnabled = true
+                return
+        }
+
+        DatabaseService.shared.createGoal(goalName: goalName) { [weak self] (result) in
+            switch result {
+            case.failure(let error):
+                DispatchQueue.main.async {
+                    self?.showAlert(title: "Error creating item", message: "Sorry something went wrong: \(error.localizedDescription)")
+                }
+            case .success(let goalId):
+//                self.uploadPhoto(photo: resizedImage, documentId: documentId)
+                DispatchQueue.main.async {
+                    self?.goalId = goalId
+                    self?.button.isEnabled = false
+                    self?.button.setImage(UIImage(systemName: "star.fill"), for: .normal)
+                    self?.cameraButton.isEnabled = true
+                    self?.cameraButton.backgroundColor = .darkGray
+                    self?.coverPhotoImageView.alpha = 1.0
+                    
+                    
+                
+//                    self?.homeVC.arrayOfInMemoryTasks.append(self?.inMemoryTasks ?? <#default value#>)
+                print("success, goalId = \(goalId)")
+                }
+                
+                
+            }
+        }
+    }
     
     @IBAction func selectCoverPhotoButtonPressed(_ sender: Any) {
         let alertController = UIAlertController(title: "Choose Photo Option", message: nil, preferredStyle: .actionSheet)
@@ -74,29 +166,20 @@ class CreateGoalController: UIViewController {
         present(alertController, animated: true)
     }
     
+    // construct the task
+    // make the textfield.text the task description
+    // the status is not complete by default
     @IBAction func createButtonPressed(_ sender: Any) {
         
-        guard let goalName = goalNameTextField.text,
-            !goalName.isEmpty,  let selectedImage = selectedImage else {
-                showAlert(title: "Missing Fields", message: "All fields are required along with a photo.")
-                //                   sender.isEnabled = true
-                return
-        }
-        
-        let resizedImage = UIImage.resizeImage(originalImage: selectedImage, rect: coverPhotoImageView.bounds)
-        
-        DatabaseService.shared.createGoal(goalName: goalName, imageName: "imageName", status: "incomplete", progress: 20, tasks: Task.bedroomTasks) { (result) in
-            switch result {
-            case.failure(let error):
-                DispatchQueue.main.async {
-                    self.showAlert(title: "Error creating item", message: "Sorry something went wrong: \(error.localizedDescription)")
-                }
-            case .success(let documentId):
-                self.uploadPhoto(photo: resizedImage, documentId: documentId)
-                print("success, documentId = \(documentId)")
                 
-            }
-        }
+        
+//        let resizedImage = UIImage.resizeImage(originalImage: selectedImage, rect: coverPhotoImageView.bounds)
+        
+        
+        
+        
+        
+        
         
         
     }
@@ -132,28 +215,39 @@ class CreateGoalController: UIViewController {
     }
     
     
-//    private func addTask(goal: Goal) {
-//        DatabaseService.shared.addTask(goal: goal, task: , completion: <#T##(Result<Bool, Error>) -> ()#>)
-//    }
-    
     
     @IBAction func addButtonPressed(_ sender: Any) {
         
         print("button pressed")
-        print(tasks)
+      
         
-        if taskTextField?.text != "" {
-            tasks.append(taskTextField.text ?? "no task")
+        guard let goalId = goalId,
+            let taskDescription = taskTextField.text else {
+            return
+        }
         
+        if taskDescription != "" {
+            DatabaseService.shared.addTask(goalId: goalId, taskDescription: taskDescription) { (result) in
+                switch result {
+                case .failure(let error):
+                    print("fail: \(error)")
+                case .success:
+        
+                    let task = Task(description: taskDescription, status: "notCompleted")
+                    self.tasks.append(task)
+                    print("task successfully added")
+                    self.tableView.reloadData()
+                }
+            }
+            tableView.reloadData()
             resetTaskTextField()
         
             
         } else {
-            // Alert: Enter a task
             let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .alert)
             let cancelAction = UIAlertAction(title: "Cancel", style: .cancel)
             alertController.addAction(cancelAction)
-            alertController.message = "Enter a task"
+            alertController.message = "Enter a goal task"
             present(alertController, animated: true)
         }
     }
@@ -167,12 +261,12 @@ class CreateGoalController: UIViewController {
 }
 extension CreateGoalController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return tasks.count
+        return inMemoryTasks.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "taskCell", for: indexPath)
-        let task = tasks[indexPath.row]
+        let task = inMemoryTasks[indexPath.row]
         cell.textLabel?.text = task
         return cell
     }
@@ -198,7 +292,7 @@ extension CreateGoalController: UIImagePickerControllerDelegate, UINavigationCon
             fatalError("could not attain original image")
         }
         selectedImage = image
-        cameraButton.isHidden = true
+
         dismiss(animated: true)
     }
 }

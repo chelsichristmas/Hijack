@@ -98,7 +98,7 @@ class LoginViewController: UIViewController {
         
         authSession.signInExistingUser(email: email, password: password) { [weak self] (result) in
             switch result {
-            case .failure(let error):
+            case .failure:
                 DispatchQueue.main.async {
                     self?.errorLabel.text = "Your login information is incorrect. Please re-enter or create a new account."
                     self?.errorLabel.textColor = .systemRed

@@ -17,7 +17,7 @@ class TaskCell: UITableViewCell {
         descriptionLabel.text = task.description
     }
     
-    public func configureDetailCell(task: Task) {
+    public func configureDetailCell(task: String) {
         detailDescriptionLabel.text = task.description
     }
 

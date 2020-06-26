@@ -10,6 +10,11 @@ import Foundation
 import FirebaseFirestore
 import FirebaseAuth
 
+enum GoalStatus: String {
+    case complete = "complete"
+    case incomplete = "incomplete"
+}
+
 class DatabaseService {
     
     static let goalsCollection = "goals"
@@ -28,11 +33,6 @@ class DatabaseService {
     static let shared = DatabaseService()
     
     public func createGoal(goalName: String,
-                           imageName: String,
-                           status: String,
-                           progress: Int,
-                           tasks: [Task],
-                           
                            completion: @escaping (Result<String, Error>) -> ()) {
         guard let user = Auth.auth().currentUser else { return }
         
@@ -41,11 +41,11 @@ class DatabaseService {
         db.collection(DatabaseService.goalsCollection)
             .document(documentRef.documentID)
             .setData(["goalName":goalName,
-                      "imageName": imageName,
+                      "imageURL": "no image url",
                       "goalId":documentRef.documentID,
-                      "status": status,
-                      "progress": progress,
-                      "sellerId": user.uid]) { (error) in
+                      "status": GoalStatus.incomplete.rawValue,
+                      "progress": 0,
+                      "userId": user.uid]) { (error) in
                         if let error = error {
                             completion(.failure(error))
                         } else {
@@ -112,26 +112,29 @@ class DatabaseService {
         }
     }
     
-    public func addTask(goal: Goal, task: Task, completion: @escaping (Result<Bool, Error>) -> ()) {
-        guard let user = Auth.auth().currentUser
-//            let emailAddress = user.email
-            else {
-                print("missing user email address")
-                return
-        }
+
+    public func addTask(goalId: String, taskDescription: String, completion: @escaping (Result<Bool, Error>) -> ()) {
+        let taskDict: [String: Any] = ["description": taskDescription,
+                                       "status": TaskStatus.notCompleted.rawValue]
+        let docRef = db.collection(DatabaseService.goalsCollection).document(goalId).collection(DatabaseService.tasksCollection).document()
         
-        let docRef = db.collection(DatabaseService.goalsCollection).document(goal.goalId).collection(DatabaseService.tasksCollection).document()
-        
-        db.collection(DatabaseService.goalsCollection).document(goal.goalId).collection(DatabaseService.tasksCollection).document(docRef.documentID).setData(
-            ["description": task.description,
-             "status": task.status]) { (error) in
-                if let error = error {
-                    completion(.failure(error))
-                } else {
-                    completion(.success(true))
-                }
+        db.collection(DatabaseService.goalsCollection).document(goalId).collection(DatabaseService.tasksCollection).document(docRef.documentID).setData(taskDict) { (error) in
+            if let error = error {
+                completion(.failure(error))
+            } else {
+                completion(.success(true))
+            }
         }
-    
-    
-}
+
+//        db.collection(DatabaseService.goalsCollection).document(goalId).collection(DatabaseService.tasksCollection).document(docRef.documentID).setData(
+//        taskDict) { (error) in
+//            if let error = error {
+//                completion(.failure(error))
+//            } else {
+//                completion(.success(true))
+//            }
+//        }
+
+
+    }
 }
