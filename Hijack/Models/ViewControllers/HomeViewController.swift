@@ -45,14 +45,14 @@ class HomeViewController: UIViewController {
                }
              } else if let snapshot = snapshot {
                let goals = snapshot.documents.map { Goal($0.data()) }
-               self?.goals = goals.sorted{  $0.goalName > $1.goalName }
+                self?.goals = goals.sorted{  $0.createdDate.dateValue() > $1.createdDate.dateValue() }
              }
            })
     }
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(true)
-        listener?.remove() // no longer are we listening for changes from Firebase
+        listener?.remove()
       }
     
     override func viewDidLoad() {
