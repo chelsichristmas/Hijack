@@ -232,8 +232,8 @@ class CreateGoalController: UIViewController {
                 case .failure(let error):
                     print("fail: \(error)")
                 case .success:
-        
-                    let task = Task(description: taskDescription, status: "notCompleted")
+        // TODO: Come back to ensure the right date is being added to the task when it's created
+                    let task = Task(description: taskDescription, status: "notCompleted", createdDate: Timestamp(date: Date()))
                     self.tasks.append(task)
                     print("task successfully added")
                     self.tableView.reloadData()

@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import Firebase
 
 
 
@@ -19,6 +20,7 @@ struct MockGoal{
     let status: String
     let progress: Int
     let tasks: [Task]
+    
 
   // progress equals completed tasks didvided by total tasks(completed&not completed) times 100
     // each goal needs to have a property for compleetd tasks an a propperty for not completed tasks rather than an overall tasks property
@@ -35,12 +37,8 @@ struct MockGoal{
 struct Task {
     let description: String // name/description of task
     let status: String // not completed or completed
+    let createdDate: Timestamp
     
-    static let bedroomTasks = [Task(description: "Save $150", status: "notCompleted"), Task(description: "Remove old furniture", status: "notCompleted"), Task(description: "Order star lamp", status: "completed")]
-//
-//    static let baliTasks = [Task(description: "Book a flight", status: .completed), Task(description: "Choose hotel", status: .notCompleted), Task(description: "Invite a friend", status: .notCompleted)]
-//
-//    static let coolTasks = [Task(description: "Purchase chrome paint", status: .completed), Task(description: "Attend interesting lectures", status: .notCompleted), Task(description: "Dissect old devices", status: .notCompleted)]
 }
 
 enum TaskStatus: String {
@@ -51,5 +49,6 @@ extension Task {
     init(_ dictionary: [String: Any]) {
     self.description = dictionary["description"] as? String ?? "no item name"
         self.status = dictionary["status"] as? String ?? "no status"
+        self.createdDate = dictionary["createdBy"] as? Timestamp ?? Timestamp(date: Date())
     }
 }

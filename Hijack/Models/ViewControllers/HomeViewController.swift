@@ -58,7 +58,6 @@ class HomeViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        self.tasks = Task.bedroomTasks
         goalTableView.dataSource = self
         goalTableView.delegate = self
 //        taskTableView.delegate = self

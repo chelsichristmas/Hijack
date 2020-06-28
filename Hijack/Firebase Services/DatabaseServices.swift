@@ -125,16 +125,12 @@ class DatabaseService {
                 completion(.success(true))
             }
         }
-
-//        db.collection(DatabaseService.goalsCollection).document(goalId).collection(DatabaseService.tasksCollection).document(docRef.documentID).setData(
-//        taskDict) { (error) in
-//            if let error = error {
-//                completion(.failure(error))
-//            } else {
-//                completion(.success(true))
-//            }
-//        }
-
-
+        
+    }
+    
+    public func addCoverPhoto(imageURL: String, completion: @escaping (Result<Bool,Error>) -> ()) {
+        
+    
+        
     }
 }
