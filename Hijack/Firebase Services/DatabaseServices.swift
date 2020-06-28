@@ -21,12 +21,6 @@ class DatabaseService {
     static let usersCollection = "users"
     static let tasksCollection = "tasks"
     
-    // review - firebase firestore hierarchy
-    // top level
-    // collection -> document -> collection -> document ->......
-    
-    // let's get a reference to the Firebase Firestore database
-    
     private let db = Firestore.firestore()
     
     private init() {}
@@ -45,7 +39,8 @@ class DatabaseService {
                       "goalId":documentRef.documentID,
                       "status": GoalStatus.incomplete.rawValue,
                       "progress": 0,
-                      "userId": user.uid]) { (error) in
+                      "userId": user.uid,
+                      "createdDate": Timestamp(date: Date())]) { (error) in
                         if let error = error {
                             completion(.failure(error))
                         } else {
@@ -112,10 +107,11 @@ class DatabaseService {
         }
     }
     
-
+    
     public func addTask(goalId: String, taskDescription: String, completion: @escaping (Result<Bool, Error>) -> ()) {
         let taskDict: [String: Any] = ["description": taskDescription,
-                                       "status": TaskStatus.notCompleted.rawValue]
+                                       "status": TaskStatus.notCompleted.rawValue,
+                                       "createdDate": Timestamp(date: Date())]
         let docRef = db.collection(DatabaseService.goalsCollection).document(goalId).collection(DatabaseService.tasksCollection).document()
         
         db.collection(DatabaseService.goalsCollection).document(goalId).collection(DatabaseService.tasksCollection).document(docRef.documentID).setData(taskDict) { (error) in
@@ -130,7 +126,7 @@ class DatabaseService {
     
     public func addCoverPhoto(imageURL: String, completion: @escaping (Result<Bool,Error>) -> ()) {
         
-    
+        
         
     }
 }
