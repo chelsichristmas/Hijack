@@ -124,9 +124,6 @@ class DatabaseService {
         
     }
     
-    public func addCoverPhoto(imageURL: String, completion: @escaping (Result<Bool,Error>) -> ()) {
-        
-        
-        
-    }
+  
 }
+

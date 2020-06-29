@@ -11,12 +11,12 @@ import FirebaseAuth
 import FirebaseFirestore
 
 
-// modal presentation
+
 class CreateGoalController: UIViewController {
     
     private lazy var imagePickerController: UIImagePickerController = {
         let picker = UIImagePickerController()
-        picker.delegate = self // conform to UIImagePickerContorllerDelegate and UINavigationControllerDelegate
+        picker.delegate = self
         return picker
     }()
     
@@ -29,7 +29,6 @@ class CreateGoalController: UIViewController {
     private var tasks = [Task]() {
         didSet {
             tableView.reloadData()
-            print("\(task?.description)")
         }
     }
     public var inMemoryTasks = [String]()
@@ -41,26 +40,23 @@ class CreateGoalController: UIViewController {
     public lazy var button: UIButton = {
         let button = UIButton()
         button.setImage(UIImage(systemName: "star"), for: .normal)
-        button.addTarget(self, action: #selector(createGoalButtonPressed), for: .touchUpInside)
+        button.addTarget(self, action: #selector(starButtonPressed), for: .touchUpInside)
         return button
     }()
-    
-    
-    // change to an array of type task later
     
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var goalNameTextField: UITextField!
     @IBOutlet weak var taskTextField: UITextField!
     @IBOutlet weak var coverPhotoImageView: UIImageView!
     @IBOutlet weak var cameraButton: UIButton!
-
+    
     @IBOutlet weak var createGoalButton: UIButton!
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(true)
         //taskListener()
     }
-        override func viewDidLoad() {
+    override func viewDidLoad() {
         super.viewDidLoad()
         
         configureTableView()
@@ -80,6 +76,7 @@ class CreateGoalController: UIViewController {
         }
     }
     
+    // TODO: Get feedback on whether or not this is necessary
     private func taskListener() {
         
         print("task listener activated")
@@ -87,14 +84,14 @@ class CreateGoalController: UIViewController {
             return
         }
         listener = Firestore.firestore().collection(DatabaseService.goalsCollection).document(goalId).collection(DatabaseService.tasksCollection).addSnapshotListener({ [weak self] (snapshot, error) in
-          if let error = error {
-            DispatchQueue.main.async {
-              self?.showAlert(title: "Try again later", message: "\(error.localizedDescription)")
+            if let error = error {
+                DispatchQueue.main.async {
+                    self?.showAlert(title: "Try again later", message: "\(error.localizedDescription)")
+                }
+            } else if let snapshot = snapshot {
+                let tasks = snapshot.documents.map { Task($0.data())}
+                self?.tasks = tasks
             }
-          } else if let snapshot = snapshot {
-            let tasks = snapshot.documents.map { Task($0.data())}
-            self?.tasks = tasks
-          }
         })
         
         
@@ -103,7 +100,7 @@ class CreateGoalController: UIViewController {
     private func configureTableView(){
         tableView.dataSource = self
         tableView.delegate = self
-//        cameraButton.isHidden = false
+        //  cameraButton.isHidden = false
         goalNameTextField.rightView = button
         goalNameTextField.rightViewMode = .always
         
@@ -111,7 +108,7 @@ class CreateGoalController: UIViewController {
     }
     
     
-    @objc private func createGoalButtonPressed() {
+    @objc private func starButtonPressed() {
         
         guard let goalName = goalNameTextField.text,
             !goalName.isEmpty else {
@@ -119,7 +116,7 @@ class CreateGoalController: UIViewController {
                 //                   sender.isEnabled = true
                 return
         }
-
+        
         DatabaseService.shared.createGoal(goalName: goalName) { [weak self] (result) in
             switch result {
             case.failure(let error):
@@ -127,19 +124,13 @@ class CreateGoalController: UIViewController {
                     self?.showAlert(title: "Error creating item", message: "Sorry something went wrong: \(error.localizedDescription)")
                 }
             case .success(let goalId):
-//                self.uploadPhoto(photo: resizedImage, documentId: documentId)
-                DispatchQueue.main.async {
+            DispatchQueue.main.async {
                     self?.goalId = goalId
                     self?.button.isEnabled = false
                     self?.button.setImage(UIImage(systemName: "star.fill"), for: .normal)
                     self?.cameraButton.isEnabled = true
                     self?.cameraButton.backgroundColor = .darkGray
                     self?.coverPhotoImageView.alpha = 1.0
-                    
-                    
-                
-//                    self?.homeVC.arrayOfInMemoryTasks.append(self?.inMemoryTasks ?? <#default value#>)
-                print("success, goalId = \(goalId)")
                 }
                 
                 
@@ -166,24 +157,21 @@ class CreateGoalController: UIViewController {
         present(alertController, animated: true)
     }
     
-    // construct the task
-    // make the textfield.text the task description
-    // the status is not complete by default
+    
     @IBAction func createButtonPressed(_ sender: Any) {
         
-                
+        guard let selectedImage = selectedImage,
+            let goalId = goalId else {
+                //TODO: add code for error
+                return
+        }
         
-//        let resizedImage = UIImage.resizeImage(originalImage: selectedImage, rect: coverPhotoImageView.bounds)
+        let resizedImage = UIImage.resizeImage(originalImage: selectedImage, rect: coverPhotoImageView.bounds)
         
-        
-        
-        
-        
-        
-        
+        self.uploadPhoto(photo: resizedImage, documentId: goalId)
         
     }
-
+    
     private func uploadPhoto(photo: UIImage, documentId: String) {
         StorageService.shared.uploadPhoto(itemId: documentId, image: photo) { [weak self] (result) in
             switch result {
@@ -205,7 +193,6 @@ class CreateGoalController: UIViewController {
                     self?.showAlert(title: "Fail to update item", message: "\(error.localizedDescription)")
                 }
             } else {
-                // everything went ok
                 print("all went well with the update")
                 DispatchQueue.main.async {
                     self?.dismiss(animated: true)
@@ -214,16 +201,14 @@ class CreateGoalController: UIViewController {
         }
     }
     
-    
-    
     @IBAction func addButtonPressed(_ sender: Any) {
         
         print("button pressed")
-      
+        
         
         guard let goalId = goalId,
             let taskDescription = taskTextField.text else {
-            return
+                return
         }
         
         if taskDescription != "" {
@@ -232,7 +217,7 @@ class CreateGoalController: UIViewController {
                 case .failure(let error):
                     print("fail: \(error)")
                 case .success:
-        // TODO: Come back to ensure the right date is being added to the task when it's created
+                    // TODO: Come back to ensure the right date is being added to the task when it's created
                     let task = Task(description: taskDescription, status: "notCompleted", createdDate: Timestamp(date: Date()))
                     self.tasks.append(task)
                     print("task successfully added")
@@ -241,7 +226,7 @@ class CreateGoalController: UIViewController {
             }
             tableView.reloadData()
             resetTaskTextField()
-        
+            
             
         } else {
             let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .alert)
@@ -259,6 +244,7 @@ class CreateGoalController: UIViewController {
     
     
 }
+
 extension CreateGoalController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return inMemoryTasks.count
@@ -292,7 +278,7 @@ extension CreateGoalController: UIImagePickerControllerDelegate, UINavigationCon
             fatalError("could not attain original image")
         }
         selectedImage = image
-
+        
         dismiss(animated: true)
     }
 }
