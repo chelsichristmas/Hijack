@@ -78,7 +78,7 @@ extension GoalDetailViewController: UITableViewDataSource {
         }
         
         let task = tasks[indexPath.row]
-        cell.configureDetailCell(task: task)
+//        cell.configureDetailCell(task: task)
         
         return cell
     }

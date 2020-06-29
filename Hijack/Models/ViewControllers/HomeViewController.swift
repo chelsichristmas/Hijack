@@ -52,7 +52,7 @@ class HomeViewController: UIViewController {
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(true)
-        listener?.remove()
+        listener?.remove() // no longer are we listening for changes from Firebase
       }
     
     override func viewDidLoad() {
