@@ -11,7 +11,7 @@ import UIKit
 class GoalDetailViewController: UIViewController {
     
     
-    public var tasks = [Task]()
+    public var tasks = [String]()
     private var goal: Goal
     
     @IBOutlet weak var goalNameLabel: UILabel!
@@ -19,6 +19,7 @@ class GoalDetailViewController: UIViewController {
     @IBOutlet weak var goalImageView: UIImageView!
     @IBOutlet weak var progressBar: UIProgressView!
     @IBOutlet weak var progressLabel: UILabel!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -38,12 +39,12 @@ class GoalDetailViewController: UIViewController {
         // the image
         
         goalImageView.image = UIImage(named: goal.imageURL)
-        tasks = goal.tasks
+//        tasks = goal.tasks
         progressLabel.text = "Progress: \(goal.progress)%"
         progressBar.progress = Float(goal.progress)/100
     }
     
-    init?(coder: NSCoder, goal: Goal) {
+    init?(coder: NSCoder, goal: Goal, tasks: [String]) {
         self.goal = goal
         super.init(coder: coder)
     }
