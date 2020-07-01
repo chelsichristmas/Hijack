@@ -64,17 +64,19 @@ class HomeViewController: UIViewController {
 //        taskTableView.dataSource = self
     }
     
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        guard let createVC = segue.destination as? CreateGoalController else {
-            return
-        }
-        createVC.inMemoryTasks = inMemoryTasks
-        
-    }
+//    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+//        guard let createVC = segue.destination as? CreateGoalController else {
+//            return
+//        }
+//        createVC.inMemoryTasks = inMemoryTasks
+//
+//    }
     
     private func updateUI() {
         //           self.navigationController?.navigationBar.barTintColor = #colorLiteral(red: 0.6838642359, green: 0.8506552577, blue: 0.6396567822, alpha: 1)
     }
+    
+    
     
     
     
@@ -130,25 +132,25 @@ extension HomeViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
         let goal = goals[indexPath.row]
+        
+        let goalTasks = self.tasks
         let storyboard = UIStoryboard(name: "MainView", bundle: nil)
-//        if tableView == goalTableView {
-//            let vc = storyboard.instantiateViewController(identifier: "GoalDetailViewController") { (coder) in
-//
-//                return GoalDetailViewController(coder: coder, goal: goal, tasks: tasks)
-//            }
+        if tableView == goalTableView {
+            let vc = storyboard.instantiateViewController(identifier: "GoalDetailViewController") { (coder) in
+
+                return GoalDetailViewController(coder: coder, goal: goal)
+            }
             
-//            navigationController?.pushViewController(vc, animated: true)
-            // when using a storyboard you have to instantiate the storyboard
-            //        let vc = GoalDetailViewController()
-            //
-            //        navigationController?.pushViewController(vc, animated: true)
-            //        performSegue(withIdentifier: "goalDetailSegue", sender: nil)
-            
-            
+            navigationController?.pushViewController(vc, animated: true)
         }
     }
     
+}
+
+
     
+    
+}
 
 
 

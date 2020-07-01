@@ -49,6 +49,6 @@ extension Task {
     init(_ dictionary: [String: Any]) {
     self.description = dictionary["description"] as? String ?? "no item name"
         self.status = dictionary["status"] as? String ?? "no status"
-        self.createdDate = dictionary["createdBy"] as? Timestamp ?? Timestamp(date: Date())
+        self.createdDate = dictionary["createdDate"] as? Timestamp ?? Timestamp(date: Date())
     }
 }

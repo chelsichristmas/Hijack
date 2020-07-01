@@ -28,9 +28,9 @@ class CreateGoalController: UIViewController {
     public var task: String?
     private var tasks = [Task]() {
         didSet {
-            DispatchQueue.main.async {
-                self.tableView.reloadData()
-            }
+//            DispatchQueue.main.async {
+//                self.tableView.reloadData()
+//            }
         }
     }
     public var inMemoryTasks = [String]()
@@ -56,7 +56,7 @@ class CreateGoalController: UIViewController {
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(true)
-        //taskListener()
+        taskListener()
     }
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -214,7 +214,7 @@ class CreateGoalController: UIViewController {
                 return
         }
         
-        if taskDescription != "" {
+        if !taskDescription.isEmpty {
             DatabaseService.shared.addTask(goalId: goalId, taskDescription: taskDescription) { (result) in
                 switch result {
                 case .failure(let error):
@@ -224,7 +224,7 @@ class CreateGoalController: UIViewController {
                     let task = Task(description: taskDescription, status: "notCompleted", createdDate: Timestamp(date: Date()))
                     self.tasks.append(task)
                     print("task successfully added")
-                    self.taskListener()
+//                    self.taskListener()
                 self.tableView.reloadData()
                 }
             }
@@ -259,7 +259,6 @@ extension CreateGoalController: UITableViewDataSource {
           fatalError("Unable to deque Task Cell")
         }
         let task = tasks[indexPath.row]
-//        cell.textLabel?.text = task
         cell.configureCell(task: task)
         return cell
     }
@@ -289,3 +288,4 @@ extension CreateGoalController: UIImagePickerControllerDelegate, UINavigationCon
         dismiss(animated: true)
     }
 }
+
