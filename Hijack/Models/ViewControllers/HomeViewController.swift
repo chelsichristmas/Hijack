@@ -144,13 +144,8 @@ extension HomeViewController: UITableViewDelegate {
             navigationController?.pushViewController(vc, animated: true)
         }
     }
-    
 }
 
-
-    
-    
-}
 
 
 
