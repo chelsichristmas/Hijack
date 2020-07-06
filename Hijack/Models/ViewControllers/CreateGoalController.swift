@@ -28,7 +28,9 @@ class CreateGoalController: UIViewController {
     public var task: String?
     private var tasks = [Task]() {
         didSet {
-            tableView.reloadData()
+//            DispatchQueue.main.async {
+//                self.tableView.reloadData()
+//            }
         }
     }
     public var inMemoryTasks = [String]()
@@ -54,7 +56,7 @@ class CreateGoalController: UIViewController {
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(true)
-        //taskListener()
+        taskListener()
     }
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -170,6 +172,7 @@ class CreateGoalController: UIViewController {
         
         self.uploadPhoto(photo: resizedImage, documentId: goalId)
         
+        
     }
     
     private func uploadPhoto(photo: UIImage, documentId: String) {
@@ -211,7 +214,7 @@ class CreateGoalController: UIViewController {
                 return
         }
         
-        if taskDescription != "" {
+        if !taskDescription.isEmpty {
             DatabaseService.shared.addTask(goalId: goalId, taskDescription: taskDescription) { (result) in
                 switch result {
                 case .failure(let error):
@@ -221,10 +224,11 @@ class CreateGoalController: UIViewController {
                     let task = Task(description: taskDescription, status: "notCompleted", createdDate: Timestamp(date: Date()))
                     self.tasks.append(task)
                     print("task successfully added")
-                    self.tableView.reloadData()
+//                    self.taskListener()
+                self.tableView.reloadData()
                 }
             }
-            tableView.reloadData()
+//
             resetTaskTextField()
             
             
@@ -247,13 +251,15 @@ class CreateGoalController: UIViewController {
 
 extension CreateGoalController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return inMemoryTasks.count
+        return tasks.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "taskCell", for: indexPath)
-        let task = inMemoryTasks[indexPath.row]
-        cell.textLabel?.text = task
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: "taskCell", for: indexPath) as? TaskCell  else  {
+          fatalError("Unable to deque Task Cell")
+        }
+        let task = tasks[indexPath.row]
+        cell.configureCell(task: task)
         return cell
     }
     
@@ -282,3 +288,4 @@ extension CreateGoalController: UIImagePickerControllerDelegate, UINavigationCon
         dismiss(animated: true)
     }
 }
+
