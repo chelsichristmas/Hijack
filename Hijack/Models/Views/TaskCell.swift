@@ -15,7 +15,7 @@ protocol TaskCellDelegate: AnyObject {
 class TaskCell: UITableViewCell {
     
     weak var delegate: TaskCellDelegate?
-
+    
     @IBOutlet weak var descriptionLabel: UILabel!
     
     @IBOutlet weak var detailDescriptionLabel: UILabel!
@@ -36,47 +36,26 @@ class TaskCell: UITableViewCell {
     
     //TODO: decide whether or not to use funtion for updating UI
     public func hasTaskBeenCompleted(_ task: Task) -> Bool {
-        if task.status == "completed" {
-            return true
-        } else {
-            return false
-        }
-
-}
+        return task.status == "completed"
+    }
     
     
     private func statusChange(task: Task) {
         if hasTaskBeenCompleted(task){
-                   
-                   
-                   
-                   statusButton.setImage(UIImage(systemName: "checkedBox"), for: .normal)
-            // update the status on firebase
-                   
-               } else {
-                   do {
-                       statusButton.setImage(UIImage(systemName: "uncheckedBox"), for: .normal)
-                       
-                       
-                   } catch {
-                       print("error saving book: \(error)")
-                   }
-               }
-               
-               
-           }
-        
-    
+            
+            
+            
+            statusButton.setImage(UIImage(systemName: "checkedBox"), for: .normal)
+            
+        } else {
+            do {
+                statusButton.setImage(UIImage(systemName: "uncheckedBox"), for: .normal)
+            } catch {
+                print("error saving book: \(error)")
+            }
+        }
+    }
     @IBAction func statusButtonPressed(_ sender: UIButton) {
         delegate?.pressedStatusButton(self, button: sender)
     }
-    
-    // I to already ahve access to the task when I press the button
-    
-
-
-    
-    
-        
-       
 }
