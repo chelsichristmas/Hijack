@@ -27,7 +27,7 @@ class TaskCell: UITableViewCell {
     
     public func configureDetailCell(task: Task) {
         detailDescriptionLabel.text = task.description
-        if task.status == "completed" {
+        if task.status == true {
             statusButton.setImage(UIImage(named: "checkedBox"), for: .normal)
         } else {
             statusButton.setImage(UIImage(named: "uncheckedBox"), for: .normal)
@@ -35,27 +35,38 @@ class TaskCell: UITableViewCell {
     }
     
     //TODO: decide whether or not to use funtion for updating UI
-    public func hasTaskBeenCompleted(_ task: Task) -> Bool {
-        return task.status == "completed"
-    }
-    
-    
-    private func statusChange(task: Task) {
-        if hasTaskBeenCompleted(task){
-            
-            
-            
-            statusButton.setImage(UIImage(systemName: "checkedBox"), for: .normal)
-            
-        } else {
-            do {
-                statusButton.setImage(UIImage(systemName: "uncheckedBox"), for: .normal)
-            } catch {
-                print("error saving book: \(error)")
+    func hasTaskBeenCompleted(_ task: Task) -> Bool {
+            if task.status == true {
+                return true
+            } else {
+                return false
             }
-        }
+
     }
-    @IBAction func statusButtonPressed(_ sender: UIButton) {
+        
+        
+      public func statusChange(task: Task) {
+            if hasTaskBeenCompleted(task){
+                       
+                statusButton.setImage(UIImage(systemName: "uncheckedBox"), for: .normal)
+                //DatabaseService.
+                       
+                       
+                // update the status on firebase
+                
+                       
+                   } else {
+                        statusButton.setImage(UIImage(systemName: "checkedBox"), for: .normal)
+                           
+
+                   }
+                   
+                   
+               }
+            
+    
+@IBAction func statusButtonPressed(_ sender: UIButton) {
         delegate?.pressedStatusButton(self, button: sender)
+        
     }
 }
