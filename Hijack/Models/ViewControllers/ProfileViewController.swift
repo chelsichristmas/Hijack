@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import FirebaseAuth
 
 class ProfileViewController: UIViewController {
 
@@ -16,7 +17,17 @@ class ProfileViewController: UIViewController {
         
     }
     
-
+    @IBAction func signOutButtonPressed(_ sender: Any) {
+        do {
+            try Auth.auth().signOut()
+            UIViewController.showViewController(storyBoardName: "Main", viewControllerId: "LoginViewController")
+        } catch {
+            DispatchQueue.main.async {
+                self.showAlert(title: "Error signign out", message: "\(error.localizedDescription)")
+            }
+        }
+    }
+    
     /*
     // MARK: - Navigation
 
