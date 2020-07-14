@@ -114,6 +114,8 @@ class GoalDetailViewController: UIViewController {
             return
         }
         
+        
+        //TODO: Possibly refactor into a search tree
         for task in goalTasks {
             if hasTaskBeenCompleted(task) {
                 numberOfCompletedTasks += 1
