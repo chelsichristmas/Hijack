@@ -80,6 +80,7 @@ class HomeViewController: UIViewController {
     
     
     
+    
 }
 
 extension HomeViewController: UITableViewDataSource{
@@ -138,7 +139,7 @@ extension HomeViewController: UITableViewDelegate {
         if tableView == goalTableView {
             let vc = storyboard.instantiateViewController(identifier: "GoalDetailViewController") { (coder) in
 
-                return GoalDetailViewController(coder: coder, goal: goal)
+                return GoalDetailViewController(coder: coder, goal: goal, tasks: goalTasks)
             }
             
             navigationController?.pushViewController(vc, animated: true)
