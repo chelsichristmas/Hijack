@@ -23,7 +23,7 @@ class ProfileViewController: UIViewController {
             UIViewController.showViewController(storyBoardName: "Main", viewControllerId: "LoginViewController")
         } catch {
             DispatchQueue.main.async {
-                self.showAlert(title: "Error signign out", message: "\(error.localizedDescription)")
+                self.showAlert(title: "Error signing out", message: "\(error.localizedDescription)")
             }
         }
     }
