@@ -37,50 +37,34 @@ class HomeViewController: UIViewController {
     override func viewDidAppear(_ animated: Bool) {
          super.viewDidAppear(true)
         
+        goalListener()
         
-        listener = Firestore.firestore().collection(DatabaseService.goalsCollection).addSnapshotListener({ [weak self] (snapshot, error) in
-             if let error = error {
-               DispatchQueue.main.async {
-                 self?.showAlert(title: "Try again later", message: "\(error.localizedDescription)")
-               }
-             } else if let snapshot = snapshot {
-               let goals = snapshot.documents.map { Goal($0.data()) }
-                self?.goals = goals.sorted{  $0.createdDate.dateValue() > $1.createdDate.dateValue() }
-             }
-           })
     }
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(true)
-        listener?.remove() // no longer are we listening for changes from Firebase
+        listener?.remove() 
       }
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        goalListener()
         goalTableView.dataSource = self
         goalTableView.delegate = self
-//        taskTableView.delegate = self
-//        taskTableView.dataSource = self
     }
-    
-//    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-//        guard let createVC = segue.destination as? CreateGoalController else {
-//            return
-//        }
-//        createVC.inMemoryTasks = inMemoryTasks
-//
-//    }
-    
-    private func updateUI() {
-        //           self.navigationController?.navigationBar.barTintColor = #colorLiteral(red: 0.6838642359, green: 0.8506552577, blue: 0.6396567822, alpha: 1)
+    private func goalListener() {
+    listener = Firestore.firestore().collection(DatabaseService.goalsCollection).addSnapshotListener({ [weak self] (snapshot, error) in
+      if let error = error {
+        DispatchQueue.main.async {
+          self?.showAlert(title: "Try again later", message: "\(error.localizedDescription)")
+        }
+      } else if let snapshot = snapshot {
+        let goals = snapshot.documents.map { Goal($0.data()) }
+         self?.goals = goals.sorted{  $0.createdDate.dateValue() > $1.createdDate.dateValue() }
+      }
+    })
+        
     }
-    
-    
-    
-    
-    
-    
 }
 
 extension HomeViewController: UITableViewDataSource{
