@@ -22,7 +22,10 @@ class GoalDetailViewController: UIViewController {
         }
     }
     private var goal: Goal
+    public var goalId: String?
     private var listener: ListenerRegistration?
+    private var delegate: TaskCellDelegate?
+    
     
     @IBOutlet weak var goalNameLabel: UILabel!
     @IBOutlet weak var tableView: UITableView!
@@ -39,6 +42,7 @@ class GoalDetailViewController: UIViewController {
         
         updateUI()
         configureTableView()
+        goalId = goal.goalId
     }
     
     private func configureTableView() {
@@ -78,9 +82,22 @@ class GoalDetailViewController: UIViewController {
         })
     }
     
-    private func updateTaskStatus(_ status: String, documentId: String) {
+    private func deleteOriginalGoal(goal: Goal){
+        DatabaseService.shared.delete(goal: goal) {[weak self] (result) in
+            switch result {
+            case .failure(let error):
+                DispatchQueue.main.async {
+                    self?.showAlert(title: "Error saving item", message: "Sorry something went wrong: \(error.localizedDescription)")
+                }
+            case .success:
+                print(" Saved successfully")
+            }
+        }
+    }
+    
+    private func updateTaskStatus(taskId: String, goalId: String, status: Bool) {
         
-        Firestore.firestore().collection(DatabaseService.goalsCollection).document(documentId).updateData(["status" : status]) { [weak self] (error) in
+        Firestore.firestore().collection(DatabaseService.goalsCollection).document(goalId).collection(DatabaseService.tasksCollection).document(taskId).updateData(["status" : status]) { [weak self] (error) in
             if let error = error {
                 DispatchQueue.main.async {
                     self?.showAlert(title: "Fail to update item", message: "\(error.localizedDescription)")
@@ -107,6 +124,7 @@ extension GoalDetailViewController: UITableViewDataSource {
         }
         let task = tasks[indexPath.row]
         cell.configureDetailCell(task: task)
+        cell.delegate = self
         return cell
     }
 }
@@ -117,8 +135,38 @@ extension GoalDetailViewController: UITableViewDelegate {
     }
 }
 
-extension HomeViewController: TaskCellDelegate {
+extension GoalDetailViewController: TaskCellDelegate {
+    
+    func hasTaskBeenCompleted(_ task: Task) -> Bool {
+        if task.status == true {
+            print("pressed complete")
+            return true
+        } else {
+            print("pressed incomplete")
+            return false
+        }
+    }
+    
     func pressedStatusButton(_ taskCell: TaskCell, button: UIButton) {
-        taskCell.statusButtonPressed(button)
+        print("pressed")
+        
+        guard let indexPath = self.tableView.indexPath(for: taskCell) else {
+            fatalError("No index path available")
+        }
+        
+        guard let goalId = goalId else {
+            fatalError("No available goalId")
+        }
+        let task = self.tasks[indexPath.row]
+        
+        if hasTaskBeenCompleted(task){
+            taskCell.statusButton.setImage(UIImage(named: "unheckedBox"), for: .normal)
+            self.updateTaskStatus(taskId: task.taskId, goalId: goalId, status: false)
+            
+        } else {
+            taskCell.statusButton.setImage(UIImage(named: "checkedBox"), for: .normal)
+            
+            self.updateTaskStatus(taskId: task.taskId, goalId: goalId, status: true)
+        }
     }
 }

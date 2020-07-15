@@ -95,14 +95,11 @@ class CreateGoalController: UIViewController {
                 self?.tasks = tasks
             }
         })
-        
-        
+    
     }
     
     private func configureTableView(){
         tableView.dataSource = self
-        tableView.delegate = self
-        //  cameraButton.isHidden = false
         goalNameTextField.rightView = button
         goalNameTextField.rightViewMode = .always
         
@@ -219,16 +216,13 @@ class CreateGoalController: UIViewController {
                 switch result {
                 case .failure(let error):
                     print("fail: \(error)")
-                case .success:
-                    // TODO: Come back to ensure the right date is being added to the task when it's created
-                    let task = Task(description: taskDescription, status: "notCompleted", createdDate: Timestamp(date: Date()))
+                case .success(let taskId):
+                    let task = Task(description: taskDescription, status: false, taskId: taskId, createdDate: Timestamp(date: Date()))
                     self.tasks.append(task)
                     print("task successfully added")
-//                    self.taskListener()
                 self.tableView.reloadData()
                 }
             }
-//
             resetTaskTextField()
             
             
@@ -264,10 +258,6 @@ extension CreateGoalController: UITableViewDataSource {
     }
     
     
-}
-
-extension CreateGoalController: UITableViewDelegate {
-    // change attributes of cell like height etc.
 }
 
 extension CreateGoalController: UITextFieldDelegate {

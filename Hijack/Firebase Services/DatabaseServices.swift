@@ -32,6 +32,7 @@ class DatabaseService {
         
         let documentRef = db.collection(DatabaseService.goalsCollection).document()
         
+        
         db.collection(DatabaseService.goalsCollection)
             .document(documentRef.documentID)
             .setData(["goalName":goalName,
@@ -48,6 +49,25 @@ class DatabaseService {
                         }
         }
         
+    }
+    
+    public func addTask(goalId: String, taskDescription: String, completion: @escaping (Result<String, Error>) -> ()) {
+        
+        let docRef = db.collection(DatabaseService.goalsCollection).document(goalId).collection(DatabaseService.tasksCollection).document()
+        
+        let taskDict: [String: Any] = ["description": taskDescription,
+                                       "status": false,
+                                       "taskId": docRef.documentID,
+                                       "createdDate": Timestamp(date: Date())]
+        
+        
+        db.collection(DatabaseService.goalsCollection).document(goalId).collection(DatabaseService.tasksCollection).document(docRef.documentID).setData(taskDict) { (error) in
+            if let error = error {
+                completion(.failure(error))
+            } else {
+                completion(.success(docRef.documentID))
+            }
+        }
     }
     
     public func createDatabaseUser(authDataResult: AuthDataResult,
@@ -95,7 +115,6 @@ class DatabaseService {
         }
     }
     
-    
     public func fetchUserGoals(userId: String, completion: @escaping (Result<[Goal], Error>) -> ()) {
         db.collection(DatabaseService.goalsCollection).whereField("sellerId", isEqualTo: userId).getDocuments { (snapshot, error) in
             if let error = error {
@@ -106,24 +125,5 @@ class DatabaseService {
             }
         }
     }
-    
-    
-    public func addTask(goalId: String, taskDescription: String, completion: @escaping (Result<Bool, Error>) -> ()) {
-        let taskDict: [String: Any] = ["description": taskDescription,
-                                       "status": TaskStatus.notCompleted.rawValue,
-                                       "createdDate": Timestamp(date: Date())]
-        let docRef = db.collection(DatabaseService.goalsCollection).document(goalId).collection(DatabaseService.tasksCollection).document()
-        
-        db.collection(DatabaseService.goalsCollection).document(goalId).collection(DatabaseService.tasksCollection).document(docRef.documentID).setData(taskDict) { (error) in
-            if let error = error {
-                completion(.failure(error))
-            } else {
-                completion(.success(true))
-            }
-        }
-        
-    }
-    
-  
 }
 

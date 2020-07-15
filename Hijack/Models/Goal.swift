@@ -19,7 +19,11 @@ struct Goal {
     let tasks: [Task]
     let createdDate: Timestamp
     
+    
+
+    
 }
+
 
 extension Goal {
     init(_ dictionary: [String: Any]) {
@@ -28,7 +32,7 @@ extension Goal {
         self.imageURL = dictionary["imageURL"] as? String ?? "no image URL"
         self.status = dictionary["status"] as? String ?? "no status available"
         self.progress = dictionary["progress"] as? Int ?? 0
-        self.tasks = dictionary["tasks"] as? [Task] ?? [Task(description: "no tasks", status: "no status", createdDate: Timestamp(date: Date()))]
+        self.tasks = dictionary["tasks"] as? [Task] ?? [Task(description: "no tasks", status: false, taskId: "no taskId", createdDate: Timestamp(date: Date()))]
         self.createdDate = dictionary["createdDate"] as? Timestamp ?? Timestamp(date: Date())
     }
 }
