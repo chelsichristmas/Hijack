@@ -27,23 +27,15 @@ class LoginViewController: UIViewController {
     private var authSession = AuthenticationSession()
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         updateUI()
     }
     
     func updateUI() {
-        
-        
-        
         hijackImageView.image = UIImage(named: "hijackComfortaaFont")
         errorLabel.text = ""
         continueButton.isHidden = true
         continueButton.isEnabled = false
-        
-        
-        
     }
-    
     
     @IBAction func loginButtonPressed(_ sender: Any) {
         guard let email = emailTextField.text,
@@ -68,8 +60,6 @@ class LoginViewController: UIViewController {
         
         continueLoginFlowFromCreate(email: email, password: password)
     }
-    
-    
     
     @IBAction func createButtonPressed(_ sender: Any) {
         
@@ -126,7 +116,6 @@ class LoginViewController: UIViewController {
                 self?.createDatabaseUser(authDataResult: authDataResult)
                 
                 UIViewController.showViewController(storyBoardName: "MainView", viewControllerId: "HomeViewController")
-                
             }
         }
     }

@@ -15,7 +15,7 @@ struct Goal {
     let goalId: String
     let imageURL: String
     let status: String
-    let progress: Float
+    var progress: Float
     let tasks: [Task]
     let createdDate: Timestamp
     

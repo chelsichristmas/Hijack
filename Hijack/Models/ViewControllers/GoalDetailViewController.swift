@@ -10,6 +10,7 @@ import UIKit
 import FirebaseAuth
 import FirebaseFirestore
 import Kingfisher
+import SAConfettiView
 
 class GoalDetailViewController: UIViewController {
     
@@ -25,7 +26,7 @@ class GoalDetailViewController: UIViewController {
     public var goalId: String?
     private var listener: ListenerRegistration?
     private var delegate: TaskCellDelegate?
-    private var progress = Float(0)
+    private var progress: Float? = 0
     
     
     @IBOutlet weak var goalNameLabel: UILabel!
@@ -115,7 +116,6 @@ class GoalDetailViewController: UIViewController {
         }
         
         
-        //TODO: Possibly refactor into a search tree
         for task in goalTasks {
             if hasTaskBeenCompleted(task) {
                 numberOfCompletedTasks += 1
@@ -189,8 +189,6 @@ extension GoalDetailViewController: TaskCellDelegate {
     }
     
     func pressedStatusButton(_ taskCell: TaskCell, button: UIButton) {
-        print("pressed")
-        
         guard let indexPath = self.tableView.indexPath(for: taskCell) else {
             fatalError("No index path available")
         }
