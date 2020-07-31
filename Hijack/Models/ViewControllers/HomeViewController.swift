@@ -22,6 +22,12 @@ class HomeViewController: UIViewController {
     
     private var listener: ListenerRegistration?
     private var tasks = [Task]()
+    private var inMemoryTasks = [String]()
+    public var arrayOfInMemoryTasks = [[String]]() {
+        didSet {
+            print(arrayOfInMemoryTasks)
+        }
+    }
     private var menuItems = MenuItem.menuItems
     
     @IBOutlet weak var taskTableView: UITableView!
@@ -30,39 +36,35 @@ class HomeViewController: UIViewController {
     
     override func viewDidAppear(_ animated: Bool) {
          super.viewDidAppear(true)
-        listener = Firestore.firestore().collection(DatabaseService.goalsCollection).addSnapshotListener({ [weak self] (snapshot, error) in
-             if let error = error {
-               DispatchQueue.main.async {
-                 self?.showAlert(title: "Try again later", message: "\(error.localizedDescription)")
-               }
-             } else if let snapshot = snapshot {
-               let goals = snapshot.documents.map { Goal($0.data()) }
-               self?.goals = goals.sorted{  $0.goalName > $1.goalName }
-             }
-           })
+        
+        goalListener()
+        
     }
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(true)
-        listener?.remove() // no longer are we listening for changes from Firebase
+        listener?.remove() 
       }
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        self.tasks = Task.bedroomTasks
+        goalListener()
         goalTableView.dataSource = self
         goalTableView.delegate = self
-        taskTableView.delegate = self
-        taskTableView.dataSource = self
     }
-    
-    private func updateUI() {
-        //           self.navigationController?.navigationBar.barTintColor = #colorLiteral(red: 0.6838642359, green: 0.8506552577, blue: 0.6396567822, alpha: 1)
+    private func goalListener() {
+    listener = Firestore.firestore().collection(DatabaseService.goalsCollection).addSnapshotListener({ [weak self] (snapshot, error) in
+      if let error = error {
+        DispatchQueue.main.async {
+          self?.showAlert(title: "Try again later", message: "\(error.localizedDescription)")
+        }
+      } else if let snapshot = snapshot {
+        let goals = snapshot.documents.map { Goal($0.data()) }
+         self?.goals = goals.sorted{  $0.createdDate.dateValue() > $1.createdDate.dateValue() }
+      }
+    })
+        
     }
-    
-    
-    
 }
 
 extension HomeViewController: UITableViewDataSource{
@@ -115,26 +117,21 @@ extension HomeViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
         let goal = goals[indexPath.row]
+        
+        let goalTasks = self.tasks
         let storyboard = UIStoryboard(name: "MainView", bundle: nil)
         if tableView == goalTableView {
             let vc = storyboard.instantiateViewController(identifier: "GoalDetailViewController") { (coder) in
-                
-                return GoalDetailViewController(coder: coder, goal: goal)
+
+                return GoalDetailViewController(coder: coder, goal: goal, tasks: goalTasks)
             }
             
             navigationController?.pushViewController(vc, animated: true)
-            // when using a storyboard you have to instantiate the storyboard
-            //        let vc = GoalDetailViewController()
-            //
-            //        navigationController?.pushViewController(vc, animated: true)
-            //        performSegue(withIdentifier: "goalDetailSegue", sender: nil)
-            
-            
         }
     }
-    
-    
 }
+
+
 
 
 

@@ -7,9 +7,11 @@
 //
 
 import UIKit
+import Kingfisher
+import Firebase
 
 class GoalCell: UITableViewCell {
-    
+    private let progressValue = Float(0)
     
     @IBOutlet weak var goalImageView: UIImageView!
     
@@ -17,13 +19,13 @@ class GoalCell: UITableViewCell {
     
     @IBOutlet weak var progressBar: UIProgressView!
     @IBOutlet weak var progressLabel: UILabel!
+    
     public func configureCell(goal: Goal) {
-        
-        goalImageView.image = UIImage(named: goal.imageName)
+        goalImageView.kf.setImage(with: URL(string: goal.imageURL))
         goalImageView.alpha = 0.8
         goalImageView.roundImage()
         goalNameLabel.text = goal.goalName
-        progressLabel.text = "Progress: \(goal.progress)%"
-        progressBar.progress = Float(goal.progress)/100
+        progressLabel.text = "Progress: \(Int(goal.progress))%"
+        progressBar.setProgress(Float(goal.progress/100), animated: true)
     }
 }
