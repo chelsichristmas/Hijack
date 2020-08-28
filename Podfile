@@ -11,7 +11,7 @@ target 'Hijack' do
    pod 'FirebaseFirestoreSwift'
    pod 'Firebase/Storage'
    pod 'Kingfisher'
-   pod 'SAConfettiView'
+   
 
 
 end

@@ -10,7 +10,7 @@ import UIKit
 import FirebaseAuth
 import FirebaseFirestore
 import Kingfisher
-import SAConfettiView
+
 
 class GoalDetailViewController: UIViewController {
     

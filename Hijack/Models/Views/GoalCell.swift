@@ -10,6 +10,10 @@ import UIKit
 import Kingfisher
 import Firebase
 
+protocol GoalCellDelegate {
+    func didLongPressImage(goalCell: GoalCell)
+}
+
 class GoalCell: UITableViewCell {
     private let progressValue = Float(0)
     
@@ -19,6 +23,18 @@ class GoalCell: UITableViewCell {
     
     @IBOutlet weak var progressBar: UIProgressView!
     @IBOutlet weak var progressLabel: UILabel!
+    
+    //weak var delegate: GoalCellDelegate?
+    
+    private lazy var longPressGesture: UILongPressGestureRecognizer = {
+        let gesture = UILongPressGestureRecognizer()
+        gesture.addTarget(self, action: #selector(longPressedImage(_:)))
+        return gesture
+    }()
+    
+    @objc private func longPressedImage(_ gesture: UILongPressGestureRecognizer) {
+        
+    }
     
     public func configureCell(goal: Goal) {
         goalImageView.kf.setImage(with: URL(string: goal.imageURL))
