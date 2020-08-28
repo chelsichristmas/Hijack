@@ -13,7 +13,6 @@ import Kingfisher
 
 class GoalDetailViewController: UIViewController {
     
-    
     public var tasks = [Task]() {
         didSet {
             DispatchQueue.main.async {
@@ -21,10 +20,12 @@ class GoalDetailViewController: UIViewController {
             }
         }
     }
+    
     private var goal: Goal
     public var goalId: String?
     private var listener: ListenerRegistration?
     private var delegate: TaskCellDelegate?
+    private var progress = Float(0)
     
     
     @IBOutlet weak var goalNameLabel: UILabel!
@@ -37,12 +38,16 @@ class GoalDetailViewController: UIViewController {
         super.viewDidAppear(true)
         taskListener(goal: goal)
     }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         updateUI()
         configureTableView()
         goalId = goal.goalId
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        listener?.remove()
     }
     
     private func configureTableView() {
@@ -53,12 +58,13 @@ class GoalDetailViewController: UIViewController {
     private func updateUI() {
         goalNameLabel.text = goal.goalName
         goalImageView.kf.setImage(with: URL(string: goal.imageURL))
-        progressLabel.text = "Progress: \(goal.progress)%"
-        progressBar.progress = Float(goal.progress)/100
+        progressBar.progress = Float(0)
+        progressLabel.text = "Progress: 0%"
     }
     
-    init?(coder: NSCoder, goal: Goal) {
+    init?(coder: NSCoder, goal: Goal, tasks: [Task]) {
         self.goal = goal
+        self.tasks = tasks
         super.init(coder: coder)
     }
     
@@ -68,7 +74,7 @@ class GoalDetailViewController: UIViewController {
     
     private func taskListener(goal: Goal){
         
-        print("task listener activated")
+        
         let goalId = goal.goalId
         listener = Firestore.firestore().collection(DatabaseService.goalsCollection).document(goalId).collection(DatabaseService.tasksCollection).addSnapshotListener({ [weak self] (snapshot, error) in
             if let error = error {
@@ -78,21 +84,9 @@ class GoalDetailViewController: UIViewController {
             } else if let snapshot = snapshot {
                 let tasks = snapshot.documents.map { Task($0.data())}
                 self?.tasks = tasks
+                self?.calculateGoalProgress(tasks: self!.tasks)
             }
         })
-    }
-    
-    private func deleteOriginalGoal(goal: Goal){
-        DatabaseService.shared.delete(goal: goal) {[weak self] (result) in
-            switch result {
-            case .failure(let error):
-                DispatchQueue.main.async {
-                    self?.showAlert(title: "Error saving item", message: "Sorry something went wrong: \(error.localizedDescription)")
-                }
-            case .success:
-                print(" Saved successfully")
-            }
-        }
     }
     
     private func updateTaskStatus(taskId: String, goalId: String, status: Bool) {
@@ -100,16 +94,65 @@ class GoalDetailViewController: UIViewController {
         Firestore.firestore().collection(DatabaseService.goalsCollection).document(goalId).collection(DatabaseService.tasksCollection).document(taskId).updateData(["status" : status]) { [weak self] (error) in
             if let error = error {
                 DispatchQueue.main.async {
-                    self?.showAlert(title: "Fail to update item", message: "\(error.localizedDescription)")
+                    self?.showAlert(title: "Fail to update status", message: "\(error.localizedDescription)")
                 }
             } else {
-                print("all went well with the update")
                 DispatchQueue.main.async {
                     self?.dismiss(animated: true)
                 }
             }
         }
     }
+    
+    private func calculateGoalProgress(tasks: [Task]) {
+        let goalTasks = tasks
+        let totalNumberOfTasks = Float(tasks.count)
+        var numberOfCompletedTasks = Float(0)
+        var progressValue = Float(0)
+        
+        guard let goalId = goalId else {
+            return
+        }
+        
+        
+        //TODO: Possibly refactor into a search tree
+        for task in goalTasks {
+            if hasTaskBeenCompleted(task) {
+                numberOfCompletedTasks += 1
+                DispatchQueue.main.async {
+                    if numberOfCompletedTasks == 0 {
+                        progressValue = 0
+                        self.progressBar.setProgress(progressValue, animated: true)
+                    } else {
+                        progressValue = numberOfCompletedTasks/totalNumberOfTasks
+                        self.progressBar.setProgress(progressValue, animated: true)
+                    }
+                }
+            } else {
+                self.progressBar.setProgress(progressValue, animated: true)
+            }
+        }
+        
+        DispatchQueue.main.async {
+            self.progressLabel.text = "Progress: \(Int(progressValue * 100))%"
+            self.updateGoalProgressValue(goalId: goalId, progressValue: (progressValue * 100))
+        }
+    }
+    
+    private func updateGoalProgressValue(goalId: String, progressValue: Float) {
+        Firestore.firestore().collection(DatabaseService.goalsCollection).document(goalId).updateData(["progress" : progressValue]) { [weak self] (error) in
+            if let error = error {
+                DispatchQueue.main.async {
+                    self?.showAlert(title: "Fail to update progress value", message: "\(error.localizedDescription)")
+                }
+            } else {
+                DispatchQueue.main.async {
+                    self?.dismiss(animated: true)
+                }
+            }
+        }
+    }
+    
 }
 
 extension GoalDetailViewController: UITableViewDataSource {
@@ -139,10 +182,8 @@ extension GoalDetailViewController: TaskCellDelegate {
     
     func hasTaskBeenCompleted(_ task: Task) -> Bool {
         if task.status == true {
-            print("pressed complete")
             return true
         } else {
-            print("pressed incomplete")
             return false
         }
     }
@@ -162,7 +203,6 @@ extension GoalDetailViewController: TaskCellDelegate {
         if hasTaskBeenCompleted(task){
             taskCell.statusButton.setImage(UIImage(named: "unheckedBox"), for: .normal)
             self.updateTaskStatus(taskId: task.taskId, goalId: goalId, status: false)
-            
         } else {
             taskCell.statusButton.setImage(UIImage(named: "checkedBox"), for: .normal)
             

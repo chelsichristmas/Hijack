@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		6575F4DEF386E89591C8430F /* Pods_Hijack.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4AA2603E20266D456B8AB5A6 /* Pods_Hijack.framework */; };
 		6B4962902477287200AEAC63 /* UILabel+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B49628F2477287200AEAC63 /* UILabel+Extensions.swift */; };
 		6B4DFD672486020100654E69 /* GoalDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B4DFD662486020000654E69 /* GoalDetailViewController.swift */; };
 		6B5657FE24704CD8003A560D /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B5657FD24704CD8003A560D /* AppDelegate.swift */; };
@@ -34,11 +33,11 @@
 		6BE058A2249D3180001BCB23 /* UIImageView+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6BE058A1249D3180001BCB23 /* UIImageView+Extensions.swift */; };
 		6BE058A4249D319D001BCB23 /* UIImage+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6BE058A3249D319D001BCB23 /* UIImage+Extensions.swift */; };
 		6BEBC09F247C0D5400E26ED2 /* Goal+Task.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6BEBC09E247C0D5400E26ED2 /* Goal+Task.swift */; };
+		A81516A72F3DE086CCE70650 /* Pods_Hijack.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9FCBB219532EB04AF4B4A28B /* Pods_Hijack.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		04ABC7EE97EC935DC31051D5 /* Pods-Hijack.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Hijack.release.xcconfig"; path = "Target Support Files/Pods-Hijack/Pods-Hijack.release.xcconfig"; sourceTree = "<group>"; };
-		4AA2603E20266D456B8AB5A6 /* Pods_Hijack.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Hijack.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		57E601BF1D48789CE4724956 /* Pods-Hijack.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Hijack.debug.xcconfig"; path = "Target Support Files/Pods-Hijack/Pods-Hijack.debug.xcconfig"; sourceTree = "<group>"; };
 		6B49628F2477287200AEAC63 /* UILabel+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "UILabel+Extensions.swift"; path = "../New Group/UILabel+Extensions.swift"; sourceTree = "<group>"; };
 		6B4DFD662486020000654E69 /* GoalDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoalDetailViewController.swift; sourceTree = "<group>"; };
 		6B5657FA24704CD8003A560D /* Hijack.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Hijack.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -67,7 +66,8 @@
 		6BE058A1249D3180001BCB23 /* UIImageView+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImageView+Extensions.swift"; sourceTree = "<group>"; };
 		6BE058A3249D319D001BCB23 /* UIImage+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage+Extensions.swift"; sourceTree = "<group>"; };
 		6BEBC09E247C0D5400E26ED2 /* Goal+Task.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Goal+Task.swift"; sourceTree = "<group>"; };
-		932B673B1E4B2DA4E3324815 /* Pods-Hijack.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Hijack.debug.xcconfig"; path = "Target Support Files/Pods-Hijack/Pods-Hijack.debug.xcconfig"; sourceTree = "<group>"; };
+		9FCBB219532EB04AF4B4A28B /* Pods_Hijack.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Hijack.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		D9786F055CDB50CD8C31FA06 /* Pods-Hijack.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Hijack.release.xcconfig"; path = "Target Support Files/Pods-Hijack/Pods-Hijack.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -75,7 +75,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				6575F4DEF386E89591C8430F /* Pods_Hijack.framework in Frameworks */,
+				A81516A72F3DE086CCE70650 /* Pods_Hijack.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -88,7 +88,7 @@
 				6B5657FC24704CD8003A560D /* Hijack */,
 				6B5657FB24704CD8003A560D /* Products */,
 				FFA7173794885A7E3688C5D3 /* Pods */,
-				BFDC042ECB17F925DDA49C20 /* Frameworks */,
+				851DDCF8BB20D94B6C596A0E /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -176,10 +176,10 @@
 			path = Models/ViewControllers;
 			sourceTree = "<group>";
 		};
-		BFDC042ECB17F925DDA49C20 /* Frameworks */ = {
+		851DDCF8BB20D94B6C596A0E /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				4AA2603E20266D456B8AB5A6 /* Pods_Hijack.framework */,
+				9FCBB219532EB04AF4B4A28B /* Pods_Hijack.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -187,8 +187,8 @@
 		FFA7173794885A7E3688C5D3 /* Pods */ = {
 			isa = PBXGroup;
 			children = (
-				932B673B1E4B2DA4E3324815 /* Pods-Hijack.debug.xcconfig */,
-				04ABC7EE97EC935DC31051D5 /* Pods-Hijack.release.xcconfig */,
+				57E601BF1D48789CE4724956 /* Pods-Hijack.debug.xcconfig */,
+				D9786F055CDB50CD8C31FA06 /* Pods-Hijack.release.xcconfig */,
 			);
 			path = Pods;
 			sourceTree = "<group>";
@@ -200,11 +200,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 6B56580E24704CD9003A560D /* Build configuration list for PBXNativeTarget "Hijack" */;
 			buildPhases = (
-				EF116D393A06B41B49F40B71 /* [CP] Check Pods Manifest.lock */,
+				512F604A214545C971C5AA32 /* [CP] Check Pods Manifest.lock */,
 				6B5657F624704CD8003A560D /* Sources */,
 				6B5657F724704CD8003A560D /* Frameworks */,
 				6B5657F824704CD8003A560D /* Resources */,
-				594B2B4C6C43406CB764CA06 /* [CP] Embed Pods Frameworks */,
+				7CA98B751207F624BD34D8E9 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -264,24 +264,7 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		594B2B4C6C43406CB764CA06 /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-Hijack/Pods-Hijack-frameworks-${CONFIGURATION}-input-files.xcfilelist",
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-Hijack/Pods-Hijack-frameworks-${CONFIGURATION}-output-files.xcfilelist",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Hijack/Pods-Hijack-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		EF116D393A06B41B49F40B71 /* [CP] Check Pods Manifest.lock */ = {
+		512F604A214545C971C5AA32 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -301,6 +284,23 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		7CA98B751207F624BD34D8E9 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-Hijack/Pods-Hijack-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-Hijack/Pods-Hijack-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Hijack/Pods-Hijack-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
@@ -472,12 +472,13 @@
 		};
 		6B56580F24704CD9003A560D /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 932B673B1E4B2DA4E3324815 /* Pods-Hijack.debug.xcconfig */;
+			baseConfigurationReference = 57E601BF1D48789CE4724956 /* Pods-Hijack.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = YC2567VA38;
 				INFOPLIST_FILE = Hijack/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.1;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -491,12 +492,13 @@
 		};
 		6B56581024704CD9003A560D /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 04ABC7EE97EC935DC31051D5 /* Pods-Hijack.release.xcconfig */;
+			baseConfigurationReference = D9786F055CDB50CD8C31FA06 /* Pods-Hijack.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = YC2567VA38;
 				INFOPLIST_FILE = Hijack/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.1;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
