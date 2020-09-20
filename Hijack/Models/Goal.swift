@@ -2,25 +2,37 @@
 //  Goal.swift
 //  Hijack
 //
-//  Created by Chelsi Christmas on 5/25/20.
+//  Created by Chelsi Christmas on 6/11/20.
 //  Copyright © 2020 Chelsi Christmas. All rights reserved.
 //
 
 import Foundation
+import Firebase
 
-// Dummy Goals Model
-struct Goal{
-  let name: String
-    let dueDate: String
-    let imageName: String
+struct Goal {
+    
+    let goalName: String
+    let goalId: String
+    let imageURL: String
+    let status: String
+    let progress: Float
+    let tasks: [Task]
+    let createdDate: Timestamp
+    
+    
 
-  
-  
-  static let goals = [
-     Goal(name: "Redecorate Bedroom", dueDate: "04/13/2021", imageName: "bedroom"),
-    Goal(name: "Go to Bali", dueDate: "10/20/2020", imageName: "bali"),
-    Goal(name: "Create cool stuff", dueDate: "09/18/2025", imageName: "coolStuff")
-  ]
-  
-    // I think I'd like to sort by due date (earliest to latest due date)
+    
+}
+
+
+extension Goal {
+    init(_ dictionary: [String: Any]) {
+        self.goalName = dictionary["goalName"] as? String ?? "no item name"
+        self.goalId = dictionary["goalId"] as? String ?? "no goal id"
+        self.imageURL = dictionary["imageURL"] as? String ?? "no image URL"
+        self.status = dictionary["status"] as? String ?? "no status available"
+        self.progress = dictionary["progress"] as? Float ?? 0
+        self.tasks = dictionary["tasks"] as? [Task] ?? [Task(description: "no tasks", status: false, taskId: "no taskId", createdDate: Timestamp(date: Date()))]
+        self.createdDate = dictionary["createdDate"] as? Timestamp ?? Timestamp(date: Date())
+    }
 }

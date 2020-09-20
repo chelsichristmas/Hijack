@@ -2,20 +2,21 @@
 //  UIImage+Extensions.swift
 //  Hijack
 //
-//  Created by Chelsi Christmas on 5/21/20.
+//  Created by Chelsi Christmas on 6/19/20.
 //  Copyright © 2020 Chelsi Christmas. All rights reserved.
 //
 
 import UIKit
+import AVFoundation
 
-extension UIImageView {
-
-    func roundImage() {
-
-        self.layer.borderWidth = 1
-        self.layer.masksToBounds = false
-        self.layer.borderColor = UIColor.systemGroupedBackground.cgColor
-        self.layer.cornerRadius = self.frame.width / 2
-        self.clipsToBounds = true
+extension UIImage {
+    
+static func resizeImage(originalImage: UIImage, rect: CGRect) -> UIImage {
+      let rect = AVMakeRect(aspectRatio: originalImage.size, insideRect: rect)
+      let size = CGSize(width: rect.width, height: rect.height)
+      let renderer = UIGraphicsImageRenderer(size: size)
+      return renderer.image { (context) in
+        originalImage.draw(in: CGRect(origin: .zero, size: size))
+      }
     }
 }

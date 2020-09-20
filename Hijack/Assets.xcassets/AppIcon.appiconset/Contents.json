@@ -1,31 +1,37 @@
 {
   "images" : [
     {
+      "filename" : "Screen Shot 2020-05-26 at 9.11.13 AM.png",
       "idiom" : "iphone",
       "scale" : "2x",
       "size" : "20x20"
     },
     {
+      "filename" : "Screen Shot 2020-05-26 at 9.11.13 AM-1.png",
       "idiom" : "iphone",
       "scale" : "3x",
       "size" : "20x20"
     },
     {
+      "filename" : "Screen Shot 2020-05-26 at 9.11.13 AM-2.png",
       "idiom" : "iphone",
       "scale" : "2x",
       "size" : "29x29"
     },
     {
+      "filename" : "Screen Shot 2020-05-26 at 9.11.13 AM-3.png",
       "idiom" : "iphone",
       "scale" : "3x",
       "size" : "29x29"
     },
     {
+      "filename" : "Screen Shot 2020-05-26 at 9.11.13 AM-4.png",
       "idiom" : "iphone",
       "scale" : "2x",
       "size" : "40x40"
     },
     {
+      "filename" : "Screen Shot 2020-05-26 at 9.11.13 AM-5.png",
       "idiom" : "iphone",
       "scale" : "3x",
       "size" : "40x40"

@@ -6,11 +6,11 @@ target 'Hijack' do
   use_frameworks!
 
   # Pods for Hijack
-
    pod 'Firebase/Auth'
    pod 'Firebase/Firestore'
    pod 'FirebaseFirestoreSwift'
    pod 'Firebase/Storage'
    pod 'Kingfisher'
+
 
 end
