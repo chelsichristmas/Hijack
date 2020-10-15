@@ -35,35 +35,49 @@ class HomeViewController: UIViewController {
     @IBOutlet weak var goalTableView: UITableView!
     
     override func viewDidAppear(_ animated: Bool) {
-         super.viewDidAppear(true)
+        super.viewDidAppear(true)
         
         goalListener()
-        
     }
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(true)
         listener?.remove() 
-      }
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         goalListener()
         goalTableView.dataSource = self
         goalTableView.delegate = self
-    }
-    private func goalListener() {
-    listener = Firestore.firestore().collection(DatabaseService.goalsCollection).addSnapshotListener({ [weak self] (snapshot, error) in
-      if let error = error {
-        DispatchQueue.main.async {
-          self?.showAlert(title: "Try again later", message: "\(error.localizedDescription)")
-        }
-      } else if let snapshot = snapshot {
-        let goals = snapshot.documents.map { Goal($0.data()) }
-         self?.goals = goals.sorted{  $0.createdDate.dateValue() > $1.createdDate.dateValue() }
-      }
-    })
         
+         let longPressGesture = UILongPressGestureRecognizer()
+        self.goalTableView.addGestureRecognizer(longPressGesture)
+        longPressGesture.addTarget(self, action: #selector(longPress))
+       
+    }
+    
+    @objc func longPress() {
+        let alertController = UIAlertController(title: "Delete Goal", message: nil, preferredStyle: .alert)
+        let deleteAction = UIAlertAction(title: "Delete", style: .destructive)
+        alertController.addAction(deleteAction)
+        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel)
+        alertController.addAction(cancelAction)
+        
+        present(alertController, animated: true)
+    }
+    
+    private func goalListener() {
+        listener = Firestore.firestore().collection(DatabaseService.goalsCollection).addSnapshotListener({ [weak self] (snapshot, error) in
+            if let error = error {
+                DispatchQueue.main.async {
+                    self?.showAlert(title: "Try again later", message: "\(error.localizedDescription)")
+                }
+            } else if let snapshot = snapshot {
+                let goals = snapshot.documents.map { Goal($0.data()) }
+                self?.goals = goals.sorted{  $0.createdDate.dateValue() > $1.createdDate.dateValue() }
+            }
+        })
     }
 }
 
@@ -76,7 +90,6 @@ extension HomeViewController: UITableViewDataSource{
         } else {
             return tasks.count
         }
-        
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -94,12 +107,9 @@ extension HomeViewController: UITableViewDataSource{
             }
             let task = tasks[indexPath.row]
             cell.configureCell(task: task)
-            
             return cell
-            
         }
         return UITableViewCell()
-        
     }
 }
 
@@ -122,7 +132,7 @@ extension HomeViewController: UITableViewDelegate {
         let storyboard = UIStoryboard(name: "MainView", bundle: nil)
         if tableView == goalTableView {
             let vc = storyboard.instantiateViewController(identifier: "GoalDetailViewController") { (coder) in
-
+                
                 return GoalDetailViewController(coder: coder, goal: goal, tasks: goalTasks)
             }
             
@@ -130,14 +140,5 @@ extension HomeViewController: UITableViewDelegate {
         }
     }
 }
-
-
-
-
-
-
-
-
-
 
 
