@@ -23,6 +23,8 @@ class HomeViewController: UIViewController {
     private var listener: ListenerRegistration?
     private var tasks = [Task]()
     private var inMemoryTasks = [String]()
+    private var selectedGoal: Goal?
+    
     public var arrayOfInMemoryTasks = [[String]]() {
         didSet {
             print(arrayOfInMemoryTasks)
@@ -51,15 +53,38 @@ class HomeViewController: UIViewController {
         goalTableView.dataSource = self
         goalTableView.delegate = self
         
-         let longPressGesture = UILongPressGestureRecognizer()
+        let longPressGesture = UILongPressGestureRecognizer()
         self.goalTableView.addGestureRecognizer(longPressGesture)
         longPressGesture.addTarget(self, action: #selector(longPress))
-       
+        
     }
     
     @objc func longPress() {
+        
         let alertController = UIAlertController(title: "Delete Goal", message: nil, preferredStyle: .alert)
-        let deleteAction = UIAlertAction(title: "Delete", style: .destructive)
+        let deleteAction = UIAlertAction(title: "Delete", style: .destructive) { alertAction in
+            
+            // delete the goal from the data base
+            // I need to set the task somw where that's going to be deleted
+            // where am I getting access to the goal?
+            // typically I get access to the goal in the table view data source and the table view delegate
+            // can i get th egoal by setting some variable?
+            // When would I set the variable?
+            // Set the variable when the long press happens?
+            // its should be set before the fucntion
+            DatabaseService.shared.delete(goal: self.goals[1]) { [weak self] (result) in
+                switch result {
+                case .failure(let error):
+                    DispatchQueue.main.async {
+                        self?.showAlert(title: "Deletion error", message: error.localizedDescription)
+                        
+                    }
+                case .success:
+                    print("deleted successfully")
+                    
+                }
+            }
+        }
         alertController.addAction(deleteAction)
         let cancelAction = UIAlertAction(title: "Cancel", style: .cancel)
         alertController.addAction(cancelAction)
@@ -127,6 +152,7 @@ extension HomeViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
         let goal = goals[indexPath.row]
+        self.selectedGoal = goals[indexPath.row]
         
         let goalTasks = self.tasks
         let storyboard = UIStoryboard(name: "MainView", bundle: nil)
