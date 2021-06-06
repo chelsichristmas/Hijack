@@ -24,6 +24,7 @@ class HomeViewController: UIViewController {
     private var tasks = [Task]()
     private var inMemoryTasks = [String]()
     private var selectedGoal: Goal?
+    private var delegate: GoalCellDelegate?
     
     public var arrayOfInMemoryTasks = [[String]]() {
         didSet {
@@ -53,44 +54,44 @@ class HomeViewController: UIViewController {
         goalTableView.dataSource = self
         goalTableView.delegate = self
         
-        let longPressGesture = UILongPressGestureRecognizer()
-        self.goalTableView.addGestureRecognizer(longPressGesture)
-        longPressGesture.addTarget(self, action: #selector(longPress))
+        //        let longPressGesture = UILongPressGestureRecognizer()
+        //        self.goalTableView.addGestureRecognizer(longPressGesture)
+        //        longPressGesture.addTarget(self, action: #selector(longPress))
         
     }
     
-    @objc func longPress() {
-        
-        let alertController = UIAlertController(title: "Delete Goal", message: nil, preferredStyle: .alert)
-        let deleteAction = UIAlertAction(title: "Delete", style: .destructive) { alertAction in
-            
-            // delete the goal from the data base
-            // I need to set the task somw where that's going to be deleted
-            // where am I getting access to the goal?
-            // typically I get access to the goal in the table view data source and the table view delegate
-            // can i get th egoal by setting some variable?
-            // When would I set the variable?
-            // Set the variable when the long press happens?
-            // its should be set before the fucntion
-            DatabaseService.shared.delete(goal: self.goals[1]) { [weak self] (result) in
-                switch result {
-                case .failure(let error):
-                    DispatchQueue.main.async {
-                        self?.showAlert(title: "Deletion error", message: error.localizedDescription)
-                        
-                    }
-                case .success:
-                    print("deleted successfully")
-                    
-                }
-            }
-        }
-        alertController.addAction(deleteAction)
-        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel)
-        alertController.addAction(cancelAction)
-        
-        present(alertController, animated: true)
-    }
+    //    @objc func longPress() {
+    //
+    //        let alertController = UIAlertController(title: "Delete Goal", message: nil, preferredStyle: .alert)
+    //        let deleteAction = UIAlertAction(title: "Delete", style: .destructive) { alertAction in
+    //
+    //            // delete the goal from the data base
+    //            // I need to set the task somw where that's going to be deleted
+    //            // where am I getting access to the goal?
+    //            // typically I get access to the goal in the table view data source and the table view delegate
+    //            // can i get th egoal by setting some variable?
+    //            // When would I set the variable?
+    //            // Set the variable when the long press happens?
+    //            // its should be set before the fucntion
+    //            DatabaseService.shared.delete(goal: self.goals[1]) { [weak self] (result) in
+    //                switch result {
+    //                case .failure(let error):
+    //                    DispatchQueue.main.async {
+    //                        self?.showAlert(title: "Deletion error", message: error.localizedDescription)
+    //
+    //                    }
+    //                case .success:
+    //                    print("deleted successfully")
+    //
+    //                }
+    //            }
+    //        }
+    //        alertController.addAction(deleteAction)
+    //        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel)
+    //        alertController.addAction(cancelAction)
+    //
+    //        present(alertController, animated: true)
+    //    }
     
     private func goalListener() {
         listener = Firestore.firestore().collection(DatabaseService.goalsCollection).addSnapshotListener({ [weak self] (snapshot, error) in
@@ -125,7 +126,9 @@ extension HomeViewController: UITableViewDataSource{
             
             let goal = goals[indexPath.row]
             cell.configureCell(goal: goal)
+            cell.delegate = self
             return cell
+            
         } else if tableView == taskTableView {
             guard let cell = tableView.dequeueReusableCell(withIdentifier: "taskCell", for: indexPath) as? TaskCell else {
                 fatalError("Unable to deque Task Cell")
@@ -150,21 +153,70 @@ extension HomeViewController: UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        
+
         let goal = goals[indexPath.row]
         self.selectedGoal = goals[indexPath.row]
-        
+
         let goalTasks = self.tasks
         let storyboard = UIStoryboard(name: "MainView", bundle: nil)
         if tableView == goalTableView {
             let vc = storyboard.instantiateViewController(identifier: "GoalDetailViewController") { (coder) in
-                
+
                 return GoalDetailViewController(coder: coder, goal: goal, tasks: goalTasks)
             }
-            
+
             navigationController?.pushViewController(vc, animated: true)
         }
     }
+}
+
+extension HomeViewController: GoalCellDelegate {
+    func didLongPress(_ goalCell: GoalCell) {
+        
+        print("pressed")
+        guard let indexPath = goalTableView.indexPath(for: goalCell) else {
+            fatalError("Not working")
+        }
+        
+        let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
+        let deleteAction = UIAlertAction(title: "Delete", style: .destructive) { [weak self] alertAction in
+            self?.deleteGoal(indexPath: indexPath)
+        }
+        
+        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel)
+        alertController.addAction(deleteAction)
+        alertController.addAction(cancelAction)
+        present(alertController, animated: true)
+    }
+    
+    private func deleteGoal(indexPath: IndexPath) {
+        // TODO: guard for this variable
+        let goal = goals[indexPath.row]
+        
+        DatabaseService.shared.delete(goal: goal) { [weak self] (result) in
+            switch result {
+            case .failure(let error):
+                DispatchQueue.main.async {
+                    self?.showAlert(title: "Error", message: "\(error)")
+                }
+            case .success:
+                print("deleted successfully")
+                DispatchQueue.main.async{
+                    self?.goalListener()
+                }
+            }
+        }
+    }
+    
+    //    func pressedEditButton(_ cell: UICollectionViewCell, editButtonTapped: UIButton) {
+    //        // print("pressed")
+    //        guard let indexPath = self.collectionView.indexPath(for: cell) else { fatalError("Unable to access index path")
+    //
+    //        }
+    //
+    //        selectedIndexPath = indexPath.row
+    //
+    //    }
 }
 
 

@@ -10,7 +10,7 @@ target 'Hijack' do
    pod 'Firebase/Firestore'
    pod 'FirebaseFirestoreSwift'
    pod 'Firebase/Storage'
-   pod 'Kingfisher'
+   pod 'Kingfisher', '~> 5.13.0'
    
 
 

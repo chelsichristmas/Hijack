@@ -25,6 +25,7 @@ class CreateGoalController: UIViewController {
             coverPhotoImageView.image = selectedImage
         }
     }
+
     public var task: String?
     private var tasks = [Task]() {
         didSet {
@@ -50,7 +51,7 @@ class CreateGoalController: UIViewController {
     @IBOutlet weak var goalNameTextField: UITextField!
     @IBOutlet weak var taskTextField: UITextField!
     @IBOutlet weak var coverPhotoImageView: UIImageView!
-    @IBOutlet weak var cameraButton: UIButton!
+    @IBOutlet weak var selectCoverPhotoButton: UIButton!
     
     @IBOutlet weak var createGoalButton: UIButton!
     
@@ -71,10 +72,10 @@ class CreateGoalController: UIViewController {
     }
     private func cameraButtonCheck() {
         if goalNameTextField.text != "" && button.imageView?.image == UIImage(systemName: "star.fill") {
-            cameraButton.isEnabled = true
-            cameraButton.backgroundColor = .darkGray
+            selectCoverPhotoButton.isEnabled = true
+            selectCoverPhotoButton.backgroundColor = .darkGray
         } else {
-            cameraButton.isEnabled = false
+            selectCoverPhotoButton.isEnabled = false
         }
     }
     
@@ -127,8 +128,8 @@ class CreateGoalController: UIViewController {
                     self?.goalId = goalId
                     self?.button.isEnabled = false
                     self?.button.setImage(UIImage(systemName: "star.fill"), for: .normal)
-                    self?.cameraButton.isEnabled = true
-                    self?.cameraButton.backgroundColor = .darkGray
+                    self?.selectCoverPhotoButton.isEnabled = true
+                    self?.selectCoverPhotoButton.backgroundColor = .darkGray
                     self?.coverPhotoImageView.alpha = 1.0
                 }
                 
@@ -156,8 +157,30 @@ class CreateGoalController: UIViewController {
         present(alertController, animated: true)
     }
     
+    @IBAction func createNewGoal(_ sender: UIButton) {
+        
+        // new goal need s to be added to the firebase
+        guard let goalName = goalNameTextField.text,
+            !goalName.isEmpty else {
+            showAlert(title: "Missing Goal Name", message: "Goal name is required")
+                sender.isEnabled = true
+                return
+        }
+             
+        DatabaseService.shared.createGoal(goalName: goalName) { (result) in
+            switch result {
+            case.failure(let error):
+                DispatchQueue.main.async {
+                    self.showAlert(title: "Error creating goal", message: "Sorry something went wrong: \(error.localizedDescription)")
+                }
+            case .success:
+                print("Goal successfully created")
+                self.selectCoverPhotoButton.isEnabled = true
+            }
+        }
+    }
     
-    @IBAction func createButtonPressed(_ sender: Any) {
+    @IBAction func saveButtonPressed(_ sender: Any) {
         
         guard let selectedImage = selectedImage,
             let goalId = goalId else {
@@ -263,7 +286,7 @@ extension CreateGoalController: UITableViewDataSource {
 extension CreateGoalController: UITextFieldDelegate {
     
     func textFieldDidBeginEditing(_ textField: UITextField) {
-        
+
     }
     
 }
