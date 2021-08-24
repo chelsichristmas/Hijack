@@ -23,17 +23,12 @@ class CreateGoalController: UIViewController {
     private var selectedImage: UIImage? {
         didSet {
             coverPhotoImageView.image = selectedImage
+            uploadPhoto(photo: selectedImage!, documentId: goalId!)
         }
     }
-
+    
     public var task: String?
-    private var tasks = [Task]() {
-        didSet {
-//            DispatchQueue.main.async {
-//                self.tableView.reloadData()
-//            }
-        }
-    }
+    private var tasks = [Task]()
     public var inMemoryTasks = [String]()
     private let homeVC = HomeViewController()
     private var goalId: String?
@@ -64,6 +59,7 @@ class CreateGoalController: UIViewController {
         
         configureTableView()
         cameraButtonCheck()
+        initializeHideKeyboard()
     }
     
     override func viewDidDisappear(_ animated: Bool) {
@@ -96,7 +92,7 @@ class CreateGoalController: UIViewController {
                 self?.tasks = tasks
             }
         })
-    
+        
     }
     
     private func configureTableView(){
@@ -113,7 +109,6 @@ class CreateGoalController: UIViewController {
         guard let goalName = goalNameTextField.text,
             !goalName.isEmpty else {
                 showAlert(title: "Missing Fields", message: "Enter goal name")
-                //                   sender.isEnabled = true
                 return
         }
         
@@ -124,7 +119,7 @@ class CreateGoalController: UIViewController {
                     self?.showAlert(title: "Error creating item", message: "Sorry something went wrong: \(error.localizedDescription)")
                 }
             case .success(let goalId):
-            DispatchQueue.main.async {
+                DispatchQueue.main.async {
                     self?.goalId = goalId
                     self?.button.isEnabled = false
                     self?.button.setImage(UIImage(systemName: "star.fill"), for: .normal)
@@ -155,6 +150,7 @@ class CreateGoalController: UIViewController {
         alertController.addAction(photoLibrary)
         alertController.addAction(cancelAction)
         present(alertController, animated: true)
+        
     }
     
     @IBAction func createNewGoal(_ sender: UIButton) {
@@ -162,11 +158,11 @@ class CreateGoalController: UIViewController {
         // new goal need s to be added to the firebase
         guard let goalName = goalNameTextField.text,
             !goalName.isEmpty else {
-            showAlert(title: "Missing Goal Name", message: "Goal name is required")
+                showAlert(title: "Missing Goal Name", message: "Goal name is required")
                 sender.isEnabled = true
                 return
         }
-             
+        
         DatabaseService.shared.createGoal(goalName: goalName) { (result) in
             switch result {
             case.failure(let error):
@@ -178,21 +174,16 @@ class CreateGoalController: UIViewController {
                 self.selectCoverPhotoButton.isEnabled = true
             }
         }
+        
     }
     
     @IBAction func saveButtonPressed(_ sender: Any) {
-        
-        guard let selectedImage = selectedImage,
-            let goalId = goalId else {
-                //TODO: add code for error
-                return
+//        var missingTasksAlert = UIAlertController(title: "Missing Fields", message: "Enter tasks to save goal", preferredStyle: .alert) 
+        if tasks.count < 1 {
+            self.showAlert(title: "Missing Fields", message: "Enter tasks to save goal")
+        } else {
+        self.dismiss(animated: true)
         }
-        
-        let resizedImage = UIImage.resizeImage(originalImage: selectedImage, rect: coverPhotoImageView.bounds)
-        
-        self.uploadPhoto(photo: resizedImage, documentId: goalId)
-        
-        
     }
     
     private func uploadPhoto(photo: UIImage, documentId: String) {
@@ -203,7 +194,9 @@ class CreateGoalController: UIViewController {
                     self?.showAlert(title: "Error uploading photo", message: "\(error.localizedDescription)")
                 }
             case .success(let url):
+                DispatchQueue.main.async {
                 self?.updateItemImageURL(url, documentId: documentId)
+                }
             }
         }
     }
@@ -217,9 +210,6 @@ class CreateGoalController: UIViewController {
                 }
             } else {
                 print("all went well with the update")
-                DispatchQueue.main.async {
-                    self?.dismiss(animated: true)
-                }
             }
         }
     }
@@ -227,7 +217,6 @@ class CreateGoalController: UIViewController {
     @IBAction func addButtonPressed(_ sender: Any) {
         
         print("button pressed")
-        
         
         guard let goalId = goalId,
             let taskDescription = taskTextField.text else {
@@ -243,11 +232,10 @@ class CreateGoalController: UIViewController {
                     let task = Task(description: taskDescription, status: false, taskId: taskId, createdDate: Timestamp(date: Date()))
                     self.tasks.append(task)
                     print("task successfully added")
-                self.tableView.reloadData()
+                    self.tableView.reloadData()
                 }
             }
             resetTaskTextField()
-            
             
         } else {
             let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .alert)
@@ -263,7 +251,6 @@ class CreateGoalController: UIViewController {
         taskTextField.placeholder = "Add new Task"
     }
     
-    
 }
 
 extension CreateGoalController: UITableViewDataSource {
@@ -273,7 +260,7 @@ extension CreateGoalController: UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: "taskCell", for: indexPath) as? TaskCell  else  {
-          fatalError("Unable to deque Task Cell")
+            fatalError("Unable to deque Task Cell")
         }
         let task = tasks[indexPath.row]
         cell.configureCell(task: task)
@@ -286,7 +273,7 @@ extension CreateGoalController: UITableViewDataSource {
 extension CreateGoalController: UITextFieldDelegate {
     
     func textFieldDidBeginEditing(_ textField: UITextField) {
-
+        
     }
     
 }
@@ -299,6 +286,18 @@ extension CreateGoalController: UIImagePickerControllerDelegate, UINavigationCon
         selectedImage = image
         
         dismiss(animated: true)
+    }
+}
+
+extension CreateGoalController {
+    func initializeHideKeyboard() {
+        let tap: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
+        
+        view.addGestureRecognizer(tap)
+    }
+    
+    @objc func dismissKeyboard() {
+        view.endEditing(true)
     }
 }
 

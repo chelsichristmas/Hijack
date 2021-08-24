@@ -1,4 +1,3 @@
-//
 //  GoalDetailViewController.swift
 //  Hijack
 //

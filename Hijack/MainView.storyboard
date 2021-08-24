@@ -127,9 +127,6 @@
                     <navigationItem key="navigationItem" title="H I J A C K" id="0XL-oG-P89">
                         <barButtonItem key="leftBarButtonItem" title="Item" image="person.circle" catalog="system" id="gXE-1F-iXs">
                             <color key="tintColor" white="0.33333333329999998" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                            <connections>
-                                <segue destination="Ubj-sv-bc3" kind="show" id="clt-Ew-Xbd"/>
-                            </connections>
                         </barButtonItem>
                         <barButtonItem key="rightBarButtonItem" title="Item" image="plus" catalog="system" id="Jtt-rf-xRw">
                             <color key="tintColor" white="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -277,17 +274,12 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="842"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Create New Goal" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5Kl-Ed-ekk">
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Add New Goal" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5Kl-Ed-ekk">
                                 <rect key="frame" x="113" y="37" width="189" height="31.5"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="26"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <textField opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Enter Goal Name" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="0u3-16-wiK">
-                                <rect key="frame" x="29" y="88" width="313" height="34"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                <textInputTraits key="textInputTraits"/>
-                            </textField>
                             <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="c5A-zX-vN1">
                                 <rect key="frame" x="99" y="148" width="203" height="41"/>
                                 <color key="backgroundColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -317,33 +309,26 @@
                                 <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="taskCell" id="TJE-cV-E2H" customClass="TaskCell" customModule="Hijack" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="28" width="414" height="456.5"/>
+                                        <rect key="frame" x="0.0" y="28" width="414" height="43.5"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="TJE-cV-E2H" id="B9Q-a1-CUi">
-                                            <rect key="frame" x="0.0" y="0.0" width="414" height="456.5"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="414" height="43.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="faK-TA-5j2">
+                                                <button opaque="NO" contentMode="scaleToFill" ambiguous="YES" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="faK-TA-5j2">
                                                     <rect key="frame" x="20" y="9" width="28" height="26"/>
-                                                    <constraints>
-                                                        <constraint firstAttribute="width" constant="28" id="XWt-eb-KOQ"/>
-                                                    </constraints>
                                                     <state key="normal" title="Button" image="uncheckedBox"/>
                                                 </button>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Task Description" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Eia-Ds-hpK">
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Task Description" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Eia-Ds-hpK">
                                                     <rect key="frame" x="68" y="11" width="243" height="21"/>
+                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                             </subviews>
                                             <constraints>
-                                                <constraint firstItem="faK-TA-5j2" firstAttribute="centerY" secondItem="B9Q-a1-CUi" secondAttribute="centerY" id="8tk-kg-BAc"/>
-                                                <constraint firstItem="faK-TA-5j2" firstAttribute="leading" secondItem="B9Q-a1-CUi" secondAttribute="leadingMargin" id="KT4-I6-zbz"/>
-                                                <constraint firstItem="Eia-Ds-hpK" firstAttribute="leading" secondItem="faK-TA-5j2" secondAttribute="trailing" constant="20" id="ZTp-HO-6Zx"/>
-                                                <constraint firstItem="faK-TA-5j2" firstAttribute="centerY" secondItem="Eia-Ds-hpK" secondAttribute="centerY" id="cgF-NB-wwh"/>
-                                                <constraint firstItem="faK-TA-5j2" firstAttribute="top" secondItem="B9Q-a1-CUi" secondAttribute="topMargin" constant="-2" id="m9m-bJ-mPa"/>
-                                                <constraint firstItem="Eia-Ds-hpK" firstAttribute="top" secondItem="B9Q-a1-CUi" secondAttribute="topMargin" id="sx8-8N-kqJ"/>
+                                                <constraint firstItem="faK-TA-5j2" firstAttribute="centerY" secondItem="B9Q-a1-CUi" secondAttribute="centerY" id="AYc-IT-Ap8"/>
                                             </constraints>
                                         </tableViewCellContentView>
                                         <connections>
@@ -362,14 +347,6 @@
                                     <action selector="addButtonPressed:" destination="6Z3-Qk-mqv" eventType="touchUpInside" id="6YS-7Q-fxx"/>
                                 </connections>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="pHb-gR-OpP">
-                                <rect key="frame" x="359" y="92" width="26" height="22"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <state key="normal" title="Button" image="star" catalog="system"/>
-                                <connections>
-                                    <action selector="createNewGoal:" destination="6Z3-Qk-mqv" eventType="touchUpInside" id="l0I-gg-qGh"/>
-                                </connections>
-                            </button>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="GKJ-W1-SIx">
                                 <rect key="frame" x="157" y="780" width="87" height="43"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -383,6 +360,11 @@
                                     <action selector="saveButtonPressed:" destination="6Z3-Qk-mqv" eventType="touchUpInside" id="chp-iI-CPm"/>
                                 </connections>
                             </button>
+                            <textField opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Enter Goal " textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="0u3-16-wiK">
+                                <rect key="frame" x="44" y="85" width="313" height="34"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits"/>
+                            </textField>
                         </subviews>
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                         <constraints>
@@ -417,7 +399,6 @@
                     </navigationItem>
                     <connections>
                         <outlet property="coverPhotoImageView" destination="QwA-8d-Qfq" id="OBh-Ne-5sf"/>
-                        <outlet property="createGoalButton" destination="pHb-gR-OpP" id="mel-KE-bJy"/>
                         <outlet property="goalNameTextField" destination="0u3-16-wiK" id="IIh-Tq-W2X"/>
                         <outlet property="selectCoverPhotoButton" destination="c5A-zX-vN1" id="PV5-pA-ABc"/>
                         <outlet property="tableView" destination="CJi-bx-liT" id="g6R-qw-Fqn"/>
@@ -491,7 +472,6 @@
         <image name="hijackLobsterFont" width="512" height="286"/>
         <image name="person.circle" catalog="system" width="128" height="121"/>
         <image name="plus" catalog="system" width="128" height="113"/>
-        <image name="star" catalog="system" width="128" height="116"/>
         <image name="sunProfile" width="1600" height="1056"/>
         <image name="sunrise" width="1500" height="1500"/>
         <image name="uncheckedBox" width="434" height="438"/>
